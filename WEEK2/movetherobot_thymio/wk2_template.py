@@ -10,6 +10,7 @@ def print_temp(t_celcius):
 def forward(speed, duration):
     robot.wheels(speed, speed)
     robot.sleep(duration) 
+    robot.wheels(0, 0)
 
 robot = ThymioReal() # create an object
 
