@@ -20,7 +20,11 @@ def blink(gpio_number, duration):
     connected to. The duration is the blink interval in seconds.'''
 
     # Write your code here
-    pass
+    GPIO.output(gpio_number, GPIO.HIGH)
+    sleep(duration)
+    GPIO.output(gpio_number, GPIO.LOW)
+    sleep(duration)
+    
 
 while True:
     # Check whether the switch is closed or opened. When the switch is closed,
@@ -29,4 +33,10 @@ while True:
     # blink interval should be 1 second.
 
     # Write your code here
-    pass
+    if GPIO.input(switch) == GPIO.HIGH:
+        GPIO.output(led[1], GPIO.LOW)
+        blink(led[0], 1)
+    else:
+        GPIO.output(led[0], GPIO.LOW)
+        blink(led[1], 1)
+    
