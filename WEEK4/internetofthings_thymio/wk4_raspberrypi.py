@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 from firebase import firebase
+from time import sleep
 
 url = 'https://dw-1d-2018.firebaseio.com' # URL to Firebase database
 token = '55mNZni7ImzOoQfwiRuqRYKOTTHZsFJfhsftzSNw' # unique token used for authentication
@@ -41,12 +42,16 @@ while not done:
     press has been detected.
     '''
     if GPIO.input(12) == GPIO.HIGH:
-        movement_list.append("up"):
+        sleep(.3)
+        movement_list.append("up")
     elif GPIO.input(16) == GPIO.HIGH:
-        movement_list.append("left"):
+        sleep(.3)
+        movement_list.append("left")
     elif GPIO.input(20) == GPIO.HIGH:
-        movement_list.append("right"):
+        sleep(.3)
+        movement_list.append("right")
     elif GPIO.input(21) == GPIO.HIGH:
+        sleep(.3)
         done = True
     
 # Write to database once the OK button is pressed
