@@ -2,8 +2,8 @@ import RPi.GPIO as GPIO
 from time import sleep
 from firebase import firebase
 
-url = '' # URL to Firebase database
-token = '' # unique token used for authentication
+url = 'https://dw-1d-2018.firebaseio.com' # URL to Firebase database
+token = '55mNZni7ImzOoQfwiRuqRYKOTTHZsFJfhsftzSNw' # unique token used for authentication
 
 # Create a firebase object by specifying the URL of the database and its secret token.
 # The firebase object has functions put and get, that allows user to put data onto 
@@ -14,8 +14,10 @@ firebase = firebase.FirebaseApplication(url, token)
 GPIO.setmode(GPIO.BCM)
 
 # Use GPIO12, 16, 20 and 21 for the buttons.
+button = [12, 16, 20, 21]
 
 # Set GPIO numbers in the list: [12, 16, 20, 21] as input with pull-down resistor.
+GPIO.setup(button, GPIO.IN, GPIO.PUD_DOWN)
 
 # Keep a list of the expected movements that the eBot should perform sequentially.
 movement_list = []
@@ -38,8 +40,14 @@ while not done:
     we can address it by putting a short delay between each iteration after a key
     press has been detected.
     '''
-    pass
-
-
+    if GPIO.input(12) == GPIO.HIGH:
+        movement_list.append("up"):
+    elif GPIO.input(16) == GPIO.HIGH:
+        movement_list.append("left"):
+    elif GPIO.input(20) == GPIO.HIGH:
+        movement_list.append("right"):
+    elif GPIO.input(21) == GPIO.HIGH:
+        done = True
+    
 # Write to database once the OK button is pressed
-
+firebase.put('/', 'movement_list', movement_list)
