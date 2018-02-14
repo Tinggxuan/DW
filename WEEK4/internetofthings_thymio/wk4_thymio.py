@@ -2,8 +2,8 @@ from pythymiodw import *
 from time import sleep
 from firebase import firebase
 
-url = '' # URL to Firebase database
-token = '' # unique token used for authentication
+url = 'https://dw-1d-2018.firebaseio.com' # URL to Firebase database
+token = '55mNZni7ImzOoQfwiRuqRYKOTTHZsFJfhsftzSNw' # unique token used for authentication
 
 # Create a firebase object by specifying the URL of the database and its secret token.
 # The firebase object has functions put and get, that allows user to put data onto 
@@ -23,11 +23,31 @@ while no_movements:
     # list lasts exactly 1 second.
 
     # Write your code here
-
+    if firebase.get('/movement_list') != None:
+        if len(firebase.get('/movement_list')) > 0:
+            no_movements = False
+    robot.sleep(0.5)
 
 # Write the code to control the eBot here
 
 # 'up' movement => robot.wheels(100, 100)
 # 'left' movement => robot.wheels(-100, 100)
 # 'right' movement => robot.wheels(100, -100)
+
+movement_list = firebase.get('/movement_list')
+
+for move in movement_list:
+    if move == "up":
+        robot.wheels(100, 100)
+        robot.sleep(1)
+    elif move == "left":
+        robot.wheels(-100, 100)
+        robot.sleep(1)
+    elif move == "right":
+        robot.wheels(100, -100)
+        robot.sleep(1)
+    
+    robot.wheels(0, 0)
+
+firebase.put('/', 'movement_list', None)
 
