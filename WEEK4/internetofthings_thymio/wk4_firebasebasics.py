@@ -1,7 +1,7 @@
 from firebase import firebase
 
-url = "https://databass.firebaseio.com" # URL to Firebase database
-token = "Kv7pntgzftWZSbOknJ68W2Zr5O5i0S1L4ayrLxwj" # unique token used for authentication
+url = "https://dw-1d-2018.firebaseio.com" # URL to Firebase database
+token = "55mNZni7ImzOoQfwiRuqRYKOTTHZsFJfhsftzSNw" # unique token used for authentication
 
 # Create a firebase object by specifying the URL of the database and its secret token.
 # The firebase object has functions put and get, that allows user to put data onto 
