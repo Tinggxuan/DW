@@ -37,16 +37,16 @@ while no_movements:
 movement_list = firebase.get('/movement_list')
 
 for move in movement_list:
-    if move == "up":
+    if move.lower() == "up":
         robot.wheels(100, 100)
         robot.sleep(1)
-    elif move == "left":
+    elif move.lower() == "left":
         robot.wheels(-100, 100)
         robot.sleep(1)
-    elif move == "right":
+    elif move.lower() == "right":
         robot.wheels(100, -100)
         robot.sleep(1)
-    
+
     robot.wheels(0, 0)
 
 firebase.put('/', 'movement_list', None)
