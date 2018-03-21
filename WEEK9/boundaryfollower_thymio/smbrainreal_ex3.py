@@ -15,13 +15,13 @@ class MySMClass(sm.SM):
             return 'halt', io.Action(0,0)
         #####################################
 
-        #ground = inp.prox_ground.reflected
-        #ground = inp.prox_ground.ambiant
+        ground = inp.prox_ground.reflected
+        ground = inp.prox_ground.ambiant
 
-        #ground = inp.prox_ground.delta
-        #left = ground[0]
-        #right = ground[1]
-        #print(left,right)
+        ground = inp.prox_ground.delta
+        left = ground[0]
+        right = ground[1]
+        print(left,right)
         next_state = state
         return next_state, io.Action(fv=0.0, rv=0.1)
 
