@@ -16,17 +16,15 @@ class MySMClass(sm.SM):
         #####################################
 
         if state == None:
-            ground = inp.prox_ground.delta
-            next_state = get_state(ground)
-            return next_state, io.Action(fv=0.2, rv=0.0)
+            return get_state(inp), io.Action(fv=0.2, rv=0.0)
         elif state == "black" or state == "white":
-            ground = inp.prox_ground.delta
-            next_state = get_state(ground)
+            next_state = get_state(inp)
             if next_state == state:
                 return next_state, io.Action(fv=0.2, rv=0.0)
             else:
                 return "boundary", io.Action(fv=0.0, rv=0.2)
         elif state == "boundary":
+            
 
 
     #########################################
@@ -35,7 +33,8 @@ class MySMClass(sm.SM):
     # inputs from the robot
     #########################################
 
-    def get_state(ground):
+    def get_state(inp):
+        ground = inp.prox_ground.delta
         if ground[0] > 200 and ground[1] > 200:
             return "black"
         else:
