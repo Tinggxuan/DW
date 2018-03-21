@@ -34,9 +34,9 @@ class MySMClass(sm.SM):
     #########################################
 
     def get_state(ground):
-        if ground[0] > 200 and ground[1] > 200:
+        if ground[0] < 200 and ground[1] < 200:
             return "black"
-        else:
+        elif ground[0] > 200 and ground[1] > 200:
             return "white"
 
 
