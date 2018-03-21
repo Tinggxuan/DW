@@ -14,10 +14,7 @@ class MySMClass(sm.SM):
         if inp.button_backward:
             return 'halt', io.Action(0,0)
         #####################################
-
-        ground = inp.prox_ground.reflected
-        ground = inp.prox_ground.ambiant
-
+        
         ground = inp.prox_ground.delta
         left = ground[0]
         right = ground[1]
