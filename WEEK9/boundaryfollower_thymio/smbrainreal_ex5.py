@@ -57,8 +57,10 @@ class MySMClass(sm.SM):
 
     def get_state(inp):
         ground = inp.prox_ground.delta
-        if ground[0] > 200 and ground[1] > 200:
+        if ground[0] < 200 and ground[1] < 200:
             return "black"
+        elif ground[0] > 200 and ground[1] < 200:
+            return "aligned"
         else:
             return "white"
             
