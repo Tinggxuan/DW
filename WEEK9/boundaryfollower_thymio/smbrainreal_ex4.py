@@ -19,9 +19,13 @@ class MySMClass(sm.SM):
             ground = inp.prox_ground.delta
             next_state = get_state(ground)
             return next_state, io.Action(fv=0.2, rv=0.0)
-
-
-        return next_state, io.Action(fv=0.0, rv=0.0)
+        else:
+            ground = inp.prox_ground.delta
+            next_state = get_state(ground)
+            if next_state == state:
+                return next_state, io.Action(fv=0.2, rv=0.0)
+            else:
+                return "halt", io.Action(fv=0.0, rv=0.0)
 
     #########################################
     # Don't modify the code below.
