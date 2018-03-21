@@ -40,7 +40,7 @@ MySM=MySMClass()
 
 ############################
 
-m=ThymioSMSim(MySM, thymio_world)
+m=ThymioSMReal(MySM, thymio_world)
 try:
     m.start()
 except KeyboardInterrupt:
