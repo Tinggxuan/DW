@@ -18,7 +18,8 @@ class MySMClass(sm.SM):
         if state == None:
             ground = inp.prox_ground.delta
             next_state = get_state(ground)
-        
+            return next_state, io.Action(fv=0.2, rv=0.0)
+
 
         return next_state, io.Action(fv=0.0, rv=0.0)
 
