@@ -15,21 +15,30 @@ class MySMClass(sm.SM):
             return 'halt', io.Action(0,0)
         #####################################
 
-        ground = inp.prox_ground.reflected
-        ground = inp.prox_ground.ambiant
-
-        ground = inp.prox_ground.delta
-        left = ground[0]
-        right = ground[1]
-        print(left,right)
-        next_state = state
-        return next_state, io.Action(fv=0.0, rv=0.0)
+        if state == None:
+            ground = inp.prox_ground.delta
+            next_state = get_state(ground)
+            return next_state, io.Action(fv=0.2, rv=0.0)
+        else:
+            ground = inp.prox_ground.delta
+            next_state = get_state(ground)
+            if next_state == state:
+                return next_state, io.Action(fv=0.2, rv=0.0)
+            else:
+                return "boundary", io.Action(fv=0.0, rv=0.0)
 
     #########################################
     # Don't modify the code below.
     # this is to stop the state machine using
     # inputs from the robot
     #########################################
+
+    def get_state(ground):
+        if ground[0] > 200 and ground[1] > 200:
+            return "black"
+        else:
+            return "white"
+            
     def done(self,state):
         if state=='halt':
             return True
