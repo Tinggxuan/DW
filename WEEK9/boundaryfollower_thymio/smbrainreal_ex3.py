@@ -23,7 +23,7 @@ class MySMClass(sm.SM):
         right = ground[1]
         print(left,right)
         next_state = state
-        return next_state, io.Action(fv=0.0, rv=0.1)
+        return next_state, io.Action(fv=0.0, rv=0.0)
 
     #########################################
     # Don't modify the code below.
