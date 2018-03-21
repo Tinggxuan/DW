@@ -47,7 +47,8 @@ class MySMClass(sm.SM):
                 return "align-left", io.Action(fv=0.0, rv=0.2)
             elif next_state == "white":
                 return "align-right", io.Action(fv=0.0, rv=-0.2)
-
+            else:
+                return state, io.Action(fv=0.2, rv=0.0)
 
     #########################################
     # Don't modify the code below.
