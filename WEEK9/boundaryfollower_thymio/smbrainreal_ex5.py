@@ -19,13 +19,15 @@ class MySMClass(sm.SM):
             ground = inp.prox_ground.delta
             next_state = get_state(ground)
             return next_state, io.Action(fv=0.2, rv=0.0)
-        else:
+        elif state == "black" or state == "white":
             ground = inp.prox_ground.delta
             next_state = get_state(ground)
             if next_state == state:
                 return next_state, io.Action(fv=0.2, rv=0.0)
             else:
-                return "boundary", io.Action(fv=0.0, rv=0.0)
+                return "boundary", io.Action(fv=0.0, rv=0.2)
+        elif state == "boundary":
+
 
     #########################################
     # Don't modify the code below.
