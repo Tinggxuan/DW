@@ -26,29 +26,29 @@ class MySMClass(sm.SM):
         #####################################
         next_state = self.get_state(inp)
         if state == None:
-            return self.get_state(inp), io.Action(fv=0.2, rv=0.0)
+            return self.get_state(inp), io.Action(fv=0.1, rv=0.0)
         elif state == "black":
 #            next_state = self.get_state(inp)
             if next_state == state:
-                return next_state, io.Action(fv=0.2, rv=0.0)
+                return next_state, io.Action(fv=0.1, rv=0.0)
             else:
                 return "align-right", io.Action(fv=0.0, rv=-0.2)
         elif state == "white":
 #            next_state == self.get_state(inp)
             if next_state == state:
-                return next_state, io.Action(fv=0.2, rv=0.0)
+                return next_state, io.Action(fv=0.1, rv=0.0)
             else:
                 return "align-left", io.Action(fv=0.0, rv=0.2)
         elif state == "align-left":
 #            next_state = self.get_state(inp)
             if next_state == "aligned":
-                return next_state, io.Action(fv=0.2, rv=0.0)
+                return next_state, io.Action(fv=0.1, rv=0.0)
             else:
                 return state, io.Action(fv=0.0, rv=0.2)
         elif state == "align-right":
 #            next_state = self.get_state(inp)
             if next_state == "aligned":
-                return next_state, io.Action(fv=0.2, rv=0.0)
+                return next_state, io.Action(fv=0.1, rv=0.0)
             else:
                 return state, io.Action(fv=0.0, rv=-0.2)
         elif state == "aligned":
@@ -58,7 +58,7 @@ class MySMClass(sm.SM):
             elif next_state == "white":
                 return "align-right", io.Action(fv=0.0, rv=-0.2)
             else:
-                return state, io.Action(fv=0.2, rv=0.0)
+                return state, io.Action(fv=0.1, rv=0.0)
 
     #########################################
     # Don't modify the code below.
