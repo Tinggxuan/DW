@@ -6,6 +6,15 @@ from boxworld import thymio_world
 
 class MySMClass(sm.SM):
     start_state=None
+    def get_state(inp):
+        ground = inp.prox_ground.delta
+        if ground[0] < 200 and ground[1] < 200:
+            return "black"
+        elif ground[0] > 200 and ground[1] < 200:
+            return "aligned"
+        else:
+            return "white"
+        
     def get_next_values(self, state, inp):
         # These two lines is to stop the robot
         # by pressing the backward button.
@@ -56,14 +65,7 @@ class MySMClass(sm.SM):
     # inputs from the robot
     #########################################
 
-    def get_state(inp):
-        ground = inp.prox_ground.delta
-        if ground[0] < 200 and ground[1] < 200:
-            return "black"
-        elif ground[0] > 200 and ground[1] < 200:
-            return "aligned"
-        else:
-            return "white"
+
             
     def done(self,state):
         if state=='halt':
