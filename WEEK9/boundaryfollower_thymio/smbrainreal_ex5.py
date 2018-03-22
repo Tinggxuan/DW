@@ -15,21 +15,56 @@ class MySMClass(sm.SM):
             return 'halt', io.Action(0,0)
         #####################################
 
-        ground = inp.prox_ground.reflected
-        ground = inp.prox_ground.ambiant
-
-        ground = inp.prox_ground.delta
-        left = ground[0]
-        right = ground[1]
-        print(left,right)
-        next_state = state
-        return next_state, io.Action(fv=0.0, rv=0.0)
+        if state == None:
+            return get_state(inp), io.Action(fv=0.2, rv=0.0)
+        elif state == "black":
+            next_state = get_state(inp)
+            if next_state == state:
+                return next_state, io.Action(fv=0.2, rv=0.0)
+            else:
+                return "align-right", io.Action(fv=0.0, rv=-0.2)
+        elif state == "white":
+            next_state == get_state(inp)
+            if next_state == state:
+                return next_state, io.Action(fv=0.2, rv=0.0)
+            else:
+                return "align-left", io.Action(fv=0.0, rv=0.2)
+        elif state == "align-left":
+            next_state = get_state(inp)
+            if next_state == "aligned":
+                return next_state, io.Action(fv=0.2, rv=0.0)
+            else:
+                return state, io.Action(fv=0.0, rv=0.2)
+        elif state == "align-right":
+            next_state = get_state(inp)
+            if next_state == "aligned":
+                return next_state, io.Action(fv=0.2, rv=0.0)
+            else:
+                return state, io.Action(fv=0.0, rv=-0.2)
+        elif state == "aligned":
+            next_state = get_state(inp)
+            if next_state == "black":
+                return "align-left", io.Action(fv=0.0, rv=0.2)
+            elif next_state == "white":
+                return "align-right", io.Action(fv=0.0, rv=-0.2)
+            else:
+                return state, io.Action(fv=0.2, rv=0.0)
 
     #########################################
     # Don't modify the code below.
     # this is to stop the state machine using
     # inputs from the robot
     #########################################
+
+    def get_state(inp):
+        ground = inp.prox_ground.delta
+        if ground[0] < 200 and ground[1] < 200:
+            return "black"
+        elif ground[0] > 200 and ground[1] < 200:
+            return "aligned"
+        else:
+            return "white"
+            
     def done(self,state):
         if state=='halt':
             return True
@@ -40,7 +75,7 @@ MySM=MySMClass()
 
 ############################
 
-m=ThymioSMSim(MySM, thymio_world)
+m=ThymioSMReal(MySM)
 try:
     m.start()
 except KeyboardInterrupt:
