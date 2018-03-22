@@ -6,7 +6,7 @@ from boxworld import thymio_world
 
 class MySMClass(sm.SM):
     start_state=None
-    def get_state(inp):
+    def get_state(self, inp):
         ground = inp.prox_ground.delta
         if ground[0] < 200 and ground[1] < 200:
             return "black"
