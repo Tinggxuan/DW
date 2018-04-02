@@ -9,7 +9,8 @@ import ADS1x15
 
 
 # Create an ADS1115 ADC (16-bit) instance.
-adc = ADS1x15.ADS1115()
+adc1 = ADS1x15.ADS1115(address=0x48)
+adc2 = ADS1x15.ADS1115(address=0x49)
 
 # Or create an ADS1015 ADC (12-bit) instance.
 #adc = Adafruit_ADS1x15.ADS1015()
@@ -51,7 +52,11 @@ GAIN = 1
 # ALERT pin will briefly be pulled low.
 # Note you can also pass an optional data_rate parameter, see the simpletest.py
 # example and read_adc function for more infromation.
-adc.start_adc_comparator(0,  # Channel number
+adc1.start_adc_comparator(0,  # Channel number
+                         20000, 5000,  # High threshold value, low threshold value
+                         active_low=True, traditional=True, latching=False,
+                         num_readings=1, gain=GAIN)
+adc2.start_adc_comparator(1,  # Channel number
                          20000, 5000,  # High threshold value, low threshold value
                          active_low=True, traditional=True, latching=False,
                          num_readings=1, gain=GAIN)
@@ -67,13 +72,15 @@ print('Reading ADS1x15 channel 0 for 5 seconds with comparator...')
 start = time.time()
 while True:
     # Read the last ADC conversion value and print it out.
-    value = adc.get_last_result()
+    value1 = adc1.get_last_result()
+    value2 = adc2.get_last_result()
     # WARNING! If you try to read any other ADC channel during this continuous
     # conversion (like by calling read_adc again) it will disable the
     # continuous conversion!
-    print('Channel 0: {0}'.format(value))
+    print('Channel 0: {0}    Channel 1: {1}'.format(value1,value2))
     # Sleep for half a second.
     time.sleep(0.5)
 
 # Stop continuous conversion.  After this point you can't get data from get_last_result!
-adc.stop_adc()
+adc1.stop_adc()
+adc2.stop_adc()
