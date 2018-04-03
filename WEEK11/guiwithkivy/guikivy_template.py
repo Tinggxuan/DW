@@ -38,8 +38,23 @@ class GuiKivy(App):
 
 	def update_status(self, instance):
 		# use this callback to update firebase
-
-		
-
+		if instance.id == "green":
+			if instance.state=="normal":
+				firebase.put('/', 'green', "ON")
+				instance.state = "down"
+				instance.text = "ON"
+			else:
+				firebase.put('/', 'green', "OFF")
+				instance.state = "normal"
+				instance.text = "OFF"
+		else:
+			if instance.state=="normal":
+				firebase.put('/', 'red', "ON")
+				instance.state = "down"
+				instance.text = "ON"
+			else:
+				firebase.put('/', 'red', "OFF")
+				instance.state = "normal"
+				instance.text = "OFF"
 
 GuiKivy().run()
