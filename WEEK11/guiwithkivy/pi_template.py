@@ -11,6 +11,7 @@ GPIO.setmode(GPIO.BCM)
 ledcolor={'green':23, 'red':24}
 
 GPIO.setup(list(ledcolor.values()), GPIO.OUT)
+GPIO.output(list(ledcolor.values()), GPIO.LOW)
 
 def set_led(ledno, status):
 	# you can use this to set the LED on or off
