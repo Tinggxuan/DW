@@ -22,7 +22,7 @@ class GuiKivy(App):
 		if firebase.get('/red') != None:
 			self.red = firebase.get('/red')
 
-		lbl_green = Label(text="YellowLED",font_size=50,halign='center',valign='middle')
+		lbl_green = Label(text="GreenLED",font_size=50,halign='center',valign='middle')
 		self.tgl_btn_green = ToggleButton(id="green",text=self.green,state="normal" if self.green=="OFF" else "down",\
 										  font_size=50,on_press=self.update_status)
 		layout.add_widget(lbl_green)
