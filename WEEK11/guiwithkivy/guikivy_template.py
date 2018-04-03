@@ -26,7 +26,7 @@ class GuiKivy(App):
 		firebase.put('/', 'red', "OFF")
 
 	def build(self):
-		Window.size=(200,200)
+		Window.size=(500,100)
 		layout=GridLayout(cols=2,row_force_default=True,row_default_height=100)
 		# add your widget to the layout
 
