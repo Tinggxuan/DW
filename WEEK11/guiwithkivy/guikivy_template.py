@@ -4,8 +4,10 @@ from kivy.uix.label import Label
 from kivy.uix.togglebutton import ToggleButton
 from firebase import firebase
 
-token=None
-url=None
+f=open("./../../WEEK4/internetofthings_thymio/secret.txt", "r")
+token=f.readline().strip()
+url="https://dw-1d-2018.firebaseio.com"
+
 firebase=firebase.FirebaseApplication(url,token)
 
 class GuiKivy(App):
