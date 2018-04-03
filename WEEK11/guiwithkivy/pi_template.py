@@ -14,7 +14,10 @@ GPIO.setup(ledcolor.values(), GPIO.OUT)
 
 def set_led(ledno, status):
 	# you can use this to set the LED on or off
-	pass
+	if status == "ON"
+		GPIO.output(ledno, GPIO.HIGH)
+	elif status == "OFF":
+		GPIO.output(ledno, GPIO.LOW)
 
 while True:
 	# get firebase data and call setLED
