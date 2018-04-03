@@ -10,7 +10,7 @@ firebase=firebase.FirebaseApplication(url,token)
 GPIO.setmode(GPIO.BCM)
 ledcolor={'green':23, 'red':24}
 
-GPIO.setup(ledcolor.values(), GPIO.OUT)
+GPIO.setup(list(ledcolor.values()), GPIO.OUT)
 
 def set_led(ledno, status):
 	# you can use this to set the LED on or off
