@@ -11,8 +11,8 @@ url="https://dw-1d-2018.firebaseio.com"
 firebase=firebase.FirebaseApplication(url,token)
 
 class GuiKivy(App):
-	self.green = "OFF"
-	self.red = "OFF"
+	green = "OFF"
+	red = "OFF"
 	def build(self):
 		layout=GridLayout(col=2,row_force_default=True,row_default_height=100)
 		# add your widget to the layout
