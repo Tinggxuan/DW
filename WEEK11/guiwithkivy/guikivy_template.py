@@ -14,7 +14,7 @@ class GuiKivy(App):
 	green = "OFF"
 	red = "OFF"
 	def build(self):
-		layout=GridLayout(col=2,row_force_default=True,row_default_height=100)
+		layout=GridLayout(cols=2,row_force_default=True,row_default_height=100)
 		# add your widget to the layout
 		if firebase.get('/green') != None:
 			self.green = firebase.get('/green')
