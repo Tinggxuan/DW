@@ -11,50 +11,62 @@ url="https://dw-1d-2018.firebaseio.com"
 firebase=firebase.FirebaseApplication(url,token)
 
 class GuiKivy(App):
-	green = "OFF"
-	red = "OFF"
+
+	if firebase.get('/green') != None:
+		green = firebase.get('/green')
+	else:
+		green = "OFF"
+		firebase.put('/', 'green', "OFF")
+
+	if firebase.get('/red') != None:
+		red = firebase.get('/red')
+	else:
+		red = "OFF"
+		firebase.put('/', 'red', "OFF")
+
 	def build(self):
+		Window.size=(200,200)
 		layout=GridLayout(cols=2,row_force_default=True,row_default_height=100)
 		# add your widget to the layout
-		if firebase.get('/green') != None:
-			self.green = firebase.get('/green')
-
-		if firebase.get('/red') != None:
-			self.red = firebase.get('/red')
 
 		lbl_green = Label(text="GreenLED",font_size=50,halign='center',valign='middle')
-		self.tgl_btn_green = ToggleButton(id="green",text=self.green,state="normal" if self.green=="OFF" else "down",\
-										  font_size=50,on_press=self.update_status)
+		self.tgl_btn_green = ToggleButton(id="green",text=self.green,font_size=50,state="normal" if self.green=="OFF" else "down")
+		self.tgl_btn_green.bind(state=self.update_status)
+
 		layout.add_widget(lbl_green)
 		layout.add_widget(self.tgl_btn_green)
 
 		lbl_red = Label(text="RedLED",font_size=50,halign='center',valign='middle')
-		self.tgl_btn_red = ToggleButton(id="red",text=self.red,state="normal" if self.red=="OFF" else "down",\
-										font_size=50,on_press=self.update_status)
+		self.tgl_btn_red = ToggleButton(id="red",text=self.red,font_size=50,state="normal" if self.red=="OFF" else "down")
+		self.tgl_btn_red.bind(state=self.update_status)
 		layout.add_widget(lbl_red)
 		layout.add_widget(self.tgl_btn_red)
 		
 		return layout
 
-	def update_status(self, instance):
+	def update_status(self, instance, value):
 		# use this callback to update firebase
 		if instance.id == "green":
-			if instance.state=="normal":
-				firebase.put('/', 'green', "ON")
-				instance.state = "down"
-				instance.text = "ON"
-			else:
+			if self.green=="ON":
+				instance.state="normal"
+				instance.text = "OFF"
+				self.green = "OFF"
 				firebase.put('/', 'green', "OFF")
-				instance.state = "normal"
-				instance.text = "OFF"
-		else:
-			if instance.state=="normal":
-				firebase.put('/', 'red', "ON")
+			else:
 				instance.state = "down"
 				instance.text = "ON"
-			else:
-				firebase.put('/', 'red', "OFF")
-				instance.state = "normal"
+				self.green = "ON"
+				firebase.put('/', 'green', "ON")
+		else:
+			if self.red=="ON":
+				instance.state="normal"
 				instance.text = "OFF"
+				self.red = "OFF"
+				firebase.put('/', 'red', "OFF")
+			else:
+				instance.state = "down"
+				instance.text = "ON"
+				self.red = "ON"
+				firebase.put('/', 'red', "ON")
 
 GuiKivy().run()
