@@ -3,6 +3,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label 
 from kivy.uix.togglebutton import ToggleButton
 from firebase import firebase
+from kivy.core.window import Window
 
 f=open("./../../WEEK4/internetofthings_thymio/secret.txt", "r")
 token=f.readline().strip()
