@@ -22,14 +22,14 @@ def set_led(ledno, status):
 
 while True:
 	# get firebase data and call setLED
-	if firebase.get('/green') != None:
-		green = firebase.get('/green')
+	green = firebase.get('/green')
+	red = firebase.get('/red')
+	if green != None:
 		set_led(23, green)
 	else:
 		set_led(23, "OFF")
 
-	if firebase.get('/red') != None:
-		red = firebase.get('/red')
+	if red != None:
 		set_led(24, red)
 	else:
 		set_led(24, "OFF")
