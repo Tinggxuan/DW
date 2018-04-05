@@ -9,20 +9,20 @@ class Tank:
         self.pump = self.pump(kwargs['pump'])
 
     def water_sensor(self, pin_num): # create water sensor obj and add it to Tank obj
-        tank_water_sensor = {}
+        tank_water_sensor = {} # create empty dicitonary to store the child class obj
         for key, value in pin_num.items():
             tank_water_sensor[key] = Water_Sensor(value)
-        return tank_water_sensor
+        return tank_water_sensor # return dict for ease of child reference
 
     def valve(self, pin_num): # create valve obj and add it to Tank obj
-        tank_valve = {}
+        tank_valve = {} # create empty dicitonary to store the child class obj
         for key, value in pin_num.items():
             tank_valve[key] = Valve(value)
-        return tank_valve
+        return tank_valve # return dict for ease of child reference
 
     def pump(self, pin_num): # create pump obj and add it to Tank obj
-        tank_pump = {}
+        tank_pump = {} # create empty dicitonary to store the child class obj
         for key, value in pin_num.items():
             tank_pump[key] = Pump(value)
-        return tank_pump
+        return tank_pump # return dict for ease of child reference
 
