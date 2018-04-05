@@ -2,11 +2,11 @@ class Tank:
     
     def __init__(self, kwargs):
         # digital pin for water lvl sensor
-        self._water_lvl = self.water_lvl()
+        self.water_lvl = self.water_lvl()
         # call valve to add the valve
-        self._valve = self.valve()
+        self.valve = self.valve()
         # call pump to add the pump
-        self._pump = self.pump()
+        self.pump = self.pump()
 
     def water_lvl(self, pin_num): # receive digital pin and get the water lvl
         tank_water_sensor = Water_Sensor(pin_num)
