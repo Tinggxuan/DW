@@ -8,7 +8,7 @@ class Tank:
         # call pump to add the pump
         self.pump = self.pump()
 
-    def water_lvl(self, pin_num): # receive digital pin and get the water lvl
+    def water_sensor(self, pin_num): # create water sensor obj and add it to Tank obj
         tank_water_sensor = Water_Sensor(pin_num)
         return tank_water_sensor
 
