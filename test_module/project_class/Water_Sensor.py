@@ -1,9 +1,13 @@
 class Water_Sensor:
 
-    def __init__(self, pin_num):
-        self.pin = pin_num
-        self.status = self.get_status(pin_num)
+    def __init__(self, adc_obj, channel):
+        self.adc_obj = adc_obj
+        self.channel = channel
+        self.status = self.get_status()
 
-    def get_status(self, pin_num):
-        # Implement function to get water lvl; expect True/False
+    def get_status(self):
+        reading = self.read_adc(self.channel, 1) #1 refer to the GAIN of the sensor to read voltage from 0 to 4.09V
+        result = True if reading > 29000 else False
+
         
+
