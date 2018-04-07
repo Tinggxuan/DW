@@ -8,7 +8,7 @@ class Tank:
         # call pump to add the pump
         self.pump = self.pump(kwargs['pump'])
 
-    def water_sensor(self, pin_num): # create water sensor obj and add it to Tank obj
+    def water_sensor(self, adc, channel): # create water sensor obj and add it to Tank obj
         tank_water_sensor = {} # create empty dicitonary to store the child class obj
         for key, value in pin_num.items():
             tank_water_sensor[key] = Water_Sensor(value)
