@@ -1,17 +1,17 @@
 class Tank:
     
-    def __init__(self, kwargs):
+    def __init__(self, kwargs, adc):
         # digital pin for water lvl sensor
-        self.water_sensor = self.water_sensor(kwargs['water_sensor'])
+        self.water_sensor = self.water_sensor(adc, kwargs['water_sensor'])
         # call valve to add the valve
         self.valve = self.valve(kwargs['valve'])
         # call pump to add the pump
         self.pump = self.pump(kwargs['pump'])
 
     def water_sensor(self, adc, channel): # create water sensor obj and add it to Tank obj
-        tank_water_sensor = {} # create empty dicitonary to store the child class obj
-        for key, value in pin_num.items():
-            tank_water_sensor[key] = Water_Sensor(value)
+        tank_water_sensor = {} # create empty dicitonary to store the child  class obj
+        for key, value in channel.items():
+            tank_water_sensor[key] = Water_Sensor(adc, value)
         return tank_water_sensor # return dict for ease of child reference
 
     def valve(self, pin_num): # create valve obj and add it to Tank obj
