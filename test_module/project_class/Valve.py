@@ -1,5 +1,4 @@
 import RPi.GPIO as GPIO
-from time import sleep
 
 GPIO.setmode(GPIO.BCM)
 
@@ -9,7 +8,8 @@ class Valve:
         self.pin_num = pin_num
         GPIO.setup(pin_num, GPIO.OUT)
 
-    def activate(self, duration):
+    def activate(self):
         GPIO.output(self.pin_num, GPIO.HIGH)
-        sleep(duration)
+
+    def deactivate(self):
         GPIO.output(self.pin_num, GPIO.LOW)

@@ -8,6 +8,6 @@ class Water_Sensor:
     def get_status(self):
         reading = self.read_adc(self.channel, 1) #1 refer to the GAIN of the sensor to read voltage from 0 to 4.09V
         result = True if reading > 29000 else False
-
+        retunr result
         
 
