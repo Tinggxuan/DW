@@ -1,3 +1,7 @@
+import Water_Sensor
+import Valve
+import Pump
+
 class Tank:
     
     def __init__(self, kwargs, adc):
