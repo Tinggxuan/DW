@@ -3,8 +3,8 @@ import Tank
 class Toilet_Tank(Tank.Tank): # inherit from class 'Tank'
 
     def __init__(self, kwargs, adc):
-        super().__init__(kwargs,adc): # call the parent class __init__
-        self.flush = flush(adc, kwargs['flush']) # new attributte
+        super().__init__(kwargs,adc) # call the parent class __init__
+        self.flush = self.flush(adc, kwargs['flush']) # new attributte
 
 
     def flush(self, adc, channel):
