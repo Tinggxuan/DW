@@ -82,19 +82,23 @@ def worker_cond3(status):
         # use rain_water_tank if available else use clean_water_tank
         if rain_water_tank.water_sensor['low'] == True:
             rain_water_tank.pump['toilet_out'].activate()
+            rain_water_tank.valve['toilet_out'].activate()
             toilet_tank1.valve['in'].activate()
             while not toilet_tank1.water_sensor['high'].get_status():
                 pass
             else:
                 rain_water_tank.pump['toilet_out'].deactivate()
+                rain_water_tank.valve['toilet_out'].deactivate()
                 toilet_tank1.valve['in'].deactivate()
         else:
             clean_water_tank.pump['toilet_out'].activate()
+            clean_water_tank.valve['toilet_out'].activate()
             toilet_tank1.valve['in'].activate()
             while not toilet_tank1.water_sensor['high'].get_status():
                 pass
             else:
                 clean_water_tank.pump['toilet_out'].deactivate()
+                clean_water_tank.valve['toilet_out'].deactivate()
                 toilet_tank1.valve['in'].deactivate()
 
 def worker_cond4(status):
@@ -111,19 +115,23 @@ def worker_cond4(status):
         # use rain_water_tank if available else use clean_water_tank
         if rain_water_tank.water_sensor['low'] == True:
             rain_water_tank.pump['toilet_out'].activate()
+            rain_water_tank.valve['toilet_out'].activate()
             toilet_tank2.valve['in'].activate()
             while not toilet_tank2.water_sensor['high'].get_status():
                 pass
             else:
                 rain_water_tank.pump['toilet_out'].deactivate()
+                rain_water_tank.valve['toilet_out'].deactivate()
                 toilet_tank2.valve['in'].deactivate()
         else:
             clean_water_tank.pump['toilet_out'].activate()
+            clean_water_tank.valve['toilet_out'].activate()
             toilet_tank2.valve['in'].activate()
             while not toilet_tank2.water_sensor['high'].get_status():
                 pass
             else:
                 clean_water_tank.pump['toilet_out'].deactivate()
+                clean_water_tank.valve['toilet_out'].deactivate()
                 toilet_tank2.valve['in'].deactivate()
 
 try:
