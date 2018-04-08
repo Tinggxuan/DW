@@ -5,12 +5,23 @@ import Pump
 class Tank:
     
     def __init__(self, kwargs, adc):
-        # digital pin for water lvl sensor
-        self.water_sensor = self.water_sensor(adc, kwargs['water_sensor'])
-        # call valve to add the valve
-        self.valve = self.valve(kwargs['valve'])
-        # call pump to add the pump
-        self.pump = self.pump(kwargs['pump'])
+        # call water_sensor to add the water_sensor obj
+        try:
+            self.water_sensor = self.water_sensor(adc, kwargs['water_sensor'])
+        except:
+            self.water_sensor = None
+
+        # call valve to add the valve obj
+        try:
+            self.valve = self.valve(kwargs['valve'])
+        except:
+            self.valve = None
+
+        # call pump to add the pump obj
+        try:
+            self.pump = self.pump(kwargs['pump'])
+        except:
+            self.pump = None
 
     def water_sensor(self, adc, channel): # create water sensor obj and add it to Tank obj
         tank_water_sensor = {} # create empty dicitonary to store the child  class obj
