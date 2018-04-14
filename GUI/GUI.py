@@ -3,6 +3,12 @@ from kivy.config import Config
 Config.set('graphics', 'resizable', '0') # Disable window resize
 Config.set('graphics', 'fullscreen', 'auto')
 
+
+# Register all the font
+from kivy.core.text import LabelBase
+LabelBase.register(name="Archivo_Black",  
+                   fn_regular="/fonts/Archivo_Black/ArchivoBlack-Regular.ttf")
+
 # Import UI module
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
@@ -14,9 +20,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.core.audio import SoundLoader
-from kivy.core.image import Image
-#from kivy.graphics import BorderImage
+from kivy.uix.image import Image
 from kivy.graphics import Color, Rectangle
 from kivy.uix.popup import Popup
 
@@ -24,26 +28,30 @@ useridpassword={"1":"2","Linhao":"Smiley%7654"}
 
 Builder.load_string('''
 <LoginScreen>:
+    LoginBackgroundImage:
+        allow_stretch: True
+        keep_ratio: False
+        opacity: 0.3
+        source: 'login_background.jpeg'
+        size: self.size
+        pos: self.pos
+
+        canvas:
+            Color:
+                rgba: 0.702, 0.851, 1.0, 0.85
+            Rectangle:
+                size: self.size
+                pos: self.pos
+ 
     BoxLayout:
         orientation: 'vertical'
-        canvas:
-            Color: 
-                rgba: 1, 1, 1, 1
-            Rectangle:
-                pos: 50,50
+
         Label:
             text: 'Water Management System'
-        Button:
-            text: 'Login'
-            font_size: 50
-            on_press:
-                root.manager.transition.direction = 'left'
-                root.manager.current = 'settings'
-        Button:
-            text: 'Quit'
-            font_size: 50
-            on_press:
-                root.quit_app()
+            font_size: 100
+
+        
+        
 
 <SettingsScreen>:
     BoxLayout:
@@ -62,6 +70,9 @@ Builder.load_string('''
 
 
 
+
+class LoginBackgroundImage(Image):
+    pass
 
 
 # error = SoundLoader.load('12915_sweet_trip_mm_kick_mid.wav')

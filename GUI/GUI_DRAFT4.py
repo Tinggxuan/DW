@@ -31,7 +31,7 @@ class MyLabel(Label): #MyLabel
         self.halign='center'
         self.valign='middle'
 
-class LoginScreen(Screen):
+class MenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -360,7 +360,7 @@ class Toggle(Screen):
 class SwitchScreenApp(App):
     def build(self):
             sm=ScreenManager()
-            ms=MenuScreen(name='login')
+            ms=MenuScreen(name='menu')
             st=SettingsScreen(name='settings')
             tgl=Toggle(name="toggle")
 #            err=SettingsScreen(name="error")
