@@ -12,7 +12,7 @@ LabelBase.register(name="Archivo_Black",
 # Import UI module
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.button import Button 
 from kivy.uix.label import Label
 from kivy.app import App
@@ -24,10 +24,12 @@ from kivy.uix.image import Image
 from kivy.graphics import Color, Rectangle
 from kivy.uix.popup import Popup
 
+
 useridpassword={"1":"2","Linhao":"Smiley%7654"}
 
 Builder.load_string('''
 <LoginScreen>:
+
     LoginBackgroundImage:
         allow_stretch: True
         keep_ratio: False
@@ -38,22 +40,48 @@ Builder.load_string('''
 
         canvas:
             Color:
-                rgba: 0.702, 0.851, 1.0, 0.85
+                rgba: 0.702, 0.851, 1.0, 0.75
             Rectangle:
                 size: self.size
                 pos: self.pos
- 
-    BoxLayout:
-        orientation: 'vertical'
+    
+    FloatLayout:
+        size_hint: 0.5, 1
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-        Label:
-            text: 'Water Management System'
-            font_size: 100
-            font_name: 'Archivo_Black'
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'top'
+            size_hint: 1, 1
+            pos_hint: {'x': 0, 'y': 0}
 
-        
+            Label:
+                text: 'Water Management System'
+                font_size: 150
+                font_name: 'Archivo_Black'
+                size_hint: 0.1, 0.4
 
-        
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            size_hint: 1, 1
+            pos_hint: {'x': 0, 'y': 0}
+
+            LoginTextInput:
+                hint_text: 'Username'
+                insert_text:self.insert_text
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'bottom'
+            size_hint: 1, 1
+            pos_hint: {'x': 0, 'y': 0.3}
+
+            LoginTextInput:
+                hint_text: 'Password'
+                allow_copy: False
+                password: True
+                insert_text:self.insert_text
+    
         
 
 <SettingsScreen>:
@@ -78,105 +106,34 @@ class LoginBackgroundImage(Image):
     pass
 
 
-# error = SoundLoader.load('12915_sweet_trip_mm_kick_mid.wav')
-class MyLabel(Label):
-    def __init__(self,**kwargs):
-        Label.__init__(self,**kwargs)
-        self.bind(size=self.setter('text_size'))
-        self.padding=(50,50)
-        self.font_size=24
-        self.halign='center'
-        self.valign='middle'
+class LoginTextInput(TextInput):
+    def __init__(self, **kwargs):
+        
+        super().__init__(**kwargs)
+        self.size_hint = [1, 0.1]
+        self.font_size= self.height*1.5
+        self.padding_y= self.height*0.1
+        self.font_name= 'Archivo_Black'
+        self.multiline= False
+        self.hint_text_color = [0.902, 0.949, 1.0, 0.95]
+        self.background_color = [0.4, 0.678, 1, 0.7]
+
+    def insert_text(self, substring, from_undo=False):
+        maxLength = 12
+        length =len(self.text)
+        if length >= maxLength:
+            return super(LoginTextInput, self).insert_text("", from_undo=from_undo)
+        else:
+            return super(LoginTextInput, self).insert_text(substring, from_undo=from_undo)
+
+
+
+class LoginMenu(AnchorLayout):
+    pass
+    
 
 class LoginScreen(Screen):
-    # def __init__(self, **kwargs):
-    #     super().__init__(**kwargs)
-
-    #     with self.canvas:
-    #         # Add a red color
-    #         Rectangle(pos=(0,0), size=(900, 600),source="backgroundimg.jpg")
-    #         Color(0, 0, 0 )
-            
-    #     self.layout=GridLayout(cols=1, rows,padding=70,spacing=30)
-    #     self.add_widget(self.layout)
-    #     self.border1_1=Label(text="")
-    #     self.layout.add_widget(self.border1_1)
-    #     self.border1_2=Label(text="")
-    #     self.layout.add_widget(self.border1_2)
-    #     self.border1_3=Label(text="")
-    #     self.layout.add_widget(self.border1_3)
-    #     self.border1_4=Label(text="")
-    #     self.layout.add_widget(self.border1_4)
-    #     self.border2_1=Label(text="")
-    #     self.layout.add_widget(self.border2_1)
-        
-    #     self.borderex_1=Label(text="")
-    #     self.layout.add_widget(self.borderex_1)
-    #     self.borderex_2=Label(text="")
-    #     self.layout.add_widget(self.borderex_2)
-    #     self.borderex_3=Label(text="")
-    #     self.layout.add_widget(self.borderex_3)
-    #     self.borderex_4=Label(text="")
-    #     self.layout.add_widget(self.borderex_4)
-        
-        
-    #     l1=Label(text='UserName',font_size=30,halign='right',valign='bottom',font_name='Montserrat-Bold')
-    #     self.layout.add_widget(l1)
-    #     self.t1=TextInput(hint_text="Username:",multiline=False,size_hint= (0.25,0.05),font_name='Montserrat-Regular')
-    #     self.layout.add_widget(self.t1)
-        
-    #     self.border2_3=Label(text="")
-    #     self.layout.add_widget(self.border2_3)
-    #     self.border3_1=Label(text="")
-    #     self.layout.add_widget(self.border3_1)
-        
-        
-    #     l2=Label(text='Password',font_size=30,halign='right',valign='top',font_name='Montserrat-Bold')
-    #     self.layout.add_widget(l2)
-    #     self.t2=TextInput(hint_text="Password",multiline=False,size_hint= (0.25,0.05),font_name='Montserrat-Regular')
-    #     self.layout.add_widget(self.t2)
-        
-    #     self.border3_3=Label(text="")
-    #     self.layout.add_widget(self.border3_3)
-    #     self.border4_1=Label(text="")
-    #     self.layout.add_widget(self.border4_1)
-        
-    #     self.bordere_1=Label(text="")
-    #     self.layout.add_widget(self.bordere_1)
-    #     self.bordere_2=Label(text="")
-    #     self.layout.add_widget(self.bordere_2)
-    #     self.bordere_3=Label(text="")
-    #     self.layout.add_widget(self.bordere_3)
-    #     self.bordere_4=Label(text="")
-    #     self.layout.add_widget(self.bordere_4)
-
-    #     b1 = Button(text='Quit',on_press=self.quit_app,font_size=22,size_hint= (0.3,0.2),background_color=[47,0,0,0.75],font_name='Montserrat-Bold')
-    #     self.layout.add_widget(b1)
-    #     b2 = Button(text='Enter',font_size=22,size_hint= (0.3,0.2),background_color=[1, 154, 1, 0.8],on_press=self.enter,font_name='Montserrat-Bold')   
-    #     self.layout.add_widget(b2)    
-        
-    #     self.border4_3=Label(text="")
-    #     self.layout.add_widget(self.border4_3)
-    #     self.border5_1=Label(text="")
-    #     self.layout.add_widget(self.border5_1)
-    #     self.border5_2=Label(text="")
-    #     self.layout.add_widget(self.border5_2)
-    #     self.border5_3=Label(text="")
-    #     self.layout.add_widget(self.border5_3)
-    #     self.border5_4=Label(text="")
-    #     self.layout.add_widget(self.border5_4)
-        
-    #     self.border6_1=Label(text="")
-    #     self.layout.add_widget(self.border6_1)
-    #     self.border6_2=Label(text="")
-    #     self.layout.add_widget(self.border6_2)
-    #     self.border6_3=Label(text="")
-    #     self.layout.add_widget(self.border6_3)
-    #     self.border6_4=Label(text="")
-    #     self.layout.add_widget(self.border6_4)
-    #     self.popup = Popup(title='Invalid input', content=Label(text='Please key in valid information\n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)                                 
-    #     b2.bind(on_press=self.enter)
-
+    
     def enter(self, value):
         print("enter preesed")
         print(str(self.t1.text))
