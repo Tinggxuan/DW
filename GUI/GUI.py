@@ -21,8 +21,51 @@ from kivy.graphics import Color, Rectangle
 from kivy.uix.popup import Popup
 
 useridpassword={"1":"2","Linhao":"Smiley%7654"}
+
+Builder.load_string('''
+<LoginScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        canvas:
+            Color: 
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: 50,50
+        Label:
+            text: 'Water Management System'
+        Button:
+            text: 'Login'
+            font_size: 50
+            on_press:
+                root.manager.transition.direction = 'left'
+                root.manager.current = 'settings'
+        Button:
+            text: 'Quit'
+            font_size: 50
+            on_press:
+                root.quit_app()
+
+<SettingsScreen>:
+    BoxLayout:
+        Label:
+            text: 'Settings Screen'
+            font_size: 50
+        Button:
+            text: 'Back to menu'
+            font_size: 50
+            on_press: 
+                root.manager.transition.direction = 'right'
+                root.manager.current = 'menu'
+
+''')
+
+
+
+
+
+
 # error = SoundLoader.load('12915_sweet_trip_mm_kick_mid.wav')
-class MyLabel(Label): #MyLabel 
+class MyLabel(Label):
     def __init__(self,**kwargs):
         Label.__init__(self,**kwargs)
         self.bind(size=self.setter('text_size'))
@@ -32,93 +75,93 @@ class MyLabel(Label): #MyLabel
         self.valign='middle'
 
 class LoginScreen(Screen):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    # def __init__(self, **kwargs):
+    #     super().__init__(**kwargs)
 
-        with self.canvas:
-            # Add a red color
-            Rectangle(pos=(0,0), size=(900, 600),source="backgroundimg.jpg")
-            Color(0, 0, 0 )
+    #     with self.canvas:
+    #         # Add a red color
+    #         Rectangle(pos=(0,0), size=(900, 600),source="backgroundimg.jpg")
+    #         Color(0, 0, 0 )
             
-        self.layout=GridLayout(cols=1, rows,padding=70,spacing=30)
-        self.add_widget(self.layout)
-        self.border1_1=Label(text="")
-        self.layout.add_widget(self.border1_1)
-        self.border1_2=Label(text="")
-        self.layout.add_widget(self.border1_2)
-        self.border1_3=Label(text="")
-        self.layout.add_widget(self.border1_3)
-        self.border1_4=Label(text="")
-        self.layout.add_widget(self.border1_4)
-        self.border2_1=Label(text="")
-        self.layout.add_widget(self.border2_1)
+    #     self.layout=GridLayout(cols=1, rows,padding=70,spacing=30)
+    #     self.add_widget(self.layout)
+    #     self.border1_1=Label(text="")
+    #     self.layout.add_widget(self.border1_1)
+    #     self.border1_2=Label(text="")
+    #     self.layout.add_widget(self.border1_2)
+    #     self.border1_3=Label(text="")
+    #     self.layout.add_widget(self.border1_3)
+    #     self.border1_4=Label(text="")
+    #     self.layout.add_widget(self.border1_4)
+    #     self.border2_1=Label(text="")
+    #     self.layout.add_widget(self.border2_1)
         
-        self.borderex_1=Label(text="")
-        self.layout.add_widget(self.borderex_1)
-        self.borderex_2=Label(text="")
-        self.layout.add_widget(self.borderex_2)
-        self.borderex_3=Label(text="")
-        self.layout.add_widget(self.borderex_3)
-        self.borderex_4=Label(text="")
-        self.layout.add_widget(self.borderex_4)
-        
-        
-        l1=Label(text='UserName',font_size=30,halign='right',valign='bottom',font_name='Montserrat-Bold')
-        self.layout.add_widget(l1)
-        self.t1=TextInput(hint_text="Username:",multiline=False,size_hint= (0.25,0.05),font_name='Montserrat-Regular')
-        self.layout.add_widget(self.t1)
-        
-        self.border2_3=Label(text="")
-        self.layout.add_widget(self.border2_3)
-        self.border3_1=Label(text="")
-        self.layout.add_widget(self.border3_1)
+    #     self.borderex_1=Label(text="")
+    #     self.layout.add_widget(self.borderex_1)
+    #     self.borderex_2=Label(text="")
+    #     self.layout.add_widget(self.borderex_2)
+    #     self.borderex_3=Label(text="")
+    #     self.layout.add_widget(self.borderex_3)
+    #     self.borderex_4=Label(text="")
+    #     self.layout.add_widget(self.borderex_4)
         
         
-        l2=Label(text='Password',font_size=30,halign='right',valign='top',font_name='Montserrat-Bold')
-        self.layout.add_widget(l2)
-        self.t2=TextInput(hint_text="Password",multiline=False,size_hint= (0.25,0.05),font_name='Montserrat-Regular')
-        self.layout.add_widget(self.t2)
+    #     l1=Label(text='UserName',font_size=30,halign='right',valign='bottom',font_name='Montserrat-Bold')
+    #     self.layout.add_widget(l1)
+    #     self.t1=TextInput(hint_text="Username:",multiline=False,size_hint= (0.25,0.05),font_name='Montserrat-Regular')
+    #     self.layout.add_widget(self.t1)
         
-        self.border3_3=Label(text="")
-        self.layout.add_widget(self.border3_3)
-        self.border4_1=Label(text="")
-        self.layout.add_widget(self.border4_1)
+    #     self.border2_3=Label(text="")
+    #     self.layout.add_widget(self.border2_3)
+    #     self.border3_1=Label(text="")
+    #     self.layout.add_widget(self.border3_1)
         
-        self.bordere_1=Label(text="")
-        self.layout.add_widget(self.bordere_1)
-        self.bordere_2=Label(text="")
-        self.layout.add_widget(self.bordere_2)
-        self.bordere_3=Label(text="")
-        self.layout.add_widget(self.bordere_3)
-        self.bordere_4=Label(text="")
-        self.layout.add_widget(self.bordere_4)
+        
+    #     l2=Label(text='Password',font_size=30,halign='right',valign='top',font_name='Montserrat-Bold')
+    #     self.layout.add_widget(l2)
+    #     self.t2=TextInput(hint_text="Password",multiline=False,size_hint= (0.25,0.05),font_name='Montserrat-Regular')
+    #     self.layout.add_widget(self.t2)
+        
+    #     self.border3_3=Label(text="")
+    #     self.layout.add_widget(self.border3_3)
+    #     self.border4_1=Label(text="")
+    #     self.layout.add_widget(self.border4_1)
+        
+    #     self.bordere_1=Label(text="")
+    #     self.layout.add_widget(self.bordere_1)
+    #     self.bordere_2=Label(text="")
+    #     self.layout.add_widget(self.bordere_2)
+    #     self.bordere_3=Label(text="")
+    #     self.layout.add_widget(self.bordere_3)
+    #     self.bordere_4=Label(text="")
+    #     self.layout.add_widget(self.bordere_4)
 
-        b1 = Button(text='Quit',on_press=self.quit_app,font_size=22,size_hint= (0.3,0.2),background_color=[47,0,0,0.75],font_name='Montserrat-Bold')
-        self.layout.add_widget(b1)
-        b2 = Button(text='Enter',font_size=22,size_hint= (0.3,0.2),background_color=[1, 154, 1, 0.8],on_press=self.enter,font_name='Montserrat-Bold')   
-        self.layout.add_widget(b2)    
+    #     b1 = Button(text='Quit',on_press=self.quit_app,font_size=22,size_hint= (0.3,0.2),background_color=[47,0,0,0.75],font_name='Montserrat-Bold')
+    #     self.layout.add_widget(b1)
+    #     b2 = Button(text='Enter',font_size=22,size_hint= (0.3,0.2),background_color=[1, 154, 1, 0.8],on_press=self.enter,font_name='Montserrat-Bold')   
+    #     self.layout.add_widget(b2)    
         
-        self.border4_3=Label(text="")
-        self.layout.add_widget(self.border4_3)
-        self.border5_1=Label(text="")
-        self.layout.add_widget(self.border5_1)
-        self.border5_2=Label(text="")
-        self.layout.add_widget(self.border5_2)
-        self.border5_3=Label(text="")
-        self.layout.add_widget(self.border5_3)
-        self.border5_4=Label(text="")
-        self.layout.add_widget(self.border5_4)
+    #     self.border4_3=Label(text="")
+    #     self.layout.add_widget(self.border4_3)
+    #     self.border5_1=Label(text="")
+    #     self.layout.add_widget(self.border5_1)
+    #     self.border5_2=Label(text="")
+    #     self.layout.add_widget(self.border5_2)
+    #     self.border5_3=Label(text="")
+    #     self.layout.add_widget(self.border5_3)
+    #     self.border5_4=Label(text="")
+    #     self.layout.add_widget(self.border5_4)
         
-        self.border6_1=Label(text="")
-        self.layout.add_widget(self.border6_1)
-        self.border6_2=Label(text="")
-        self.layout.add_widget(self.border6_2)
-        self.border6_3=Label(text="")
-        self.layout.add_widget(self.border6_3)
-        self.border6_4=Label(text="")
-        self.layout.add_widget(self.border6_4)
-        self.popup = Popup(title='Invalid input', content=Label(text='Please key in valid information\n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)                                 
-        b2.bind(on_press=self.enter)
+    #     self.border6_1=Label(text="")
+    #     self.layout.add_widget(self.border6_1)
+    #     self.border6_2=Label(text="")
+    #     self.layout.add_widget(self.border6_2)
+    #     self.border6_3=Label(text="")
+    #     self.layout.add_widget(self.border6_3)
+    #     self.border6_4=Label(text="")
+    #     self.layout.add_widget(self.border6_4)
+    #     self.popup = Popup(title='Invalid input', content=Label(text='Please key in valid information\n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)                                 
+    #     b2.bind(on_press=self.enter)
 
     def enter(self, value):
         print("enter preesed")
@@ -360,15 +403,15 @@ class Toggle(Screen):
 class SwitchScreenApp(App):
     def build(self):
             sm=ScreenManager()
-            ms=MenuScreen(name='login')
+            loginscreen=LoginScreen(name='login')
             st=SettingsScreen(name='settings')
             tgl=Toggle(name="toggle")
 #            err=SettingsScreen(name="error")
 #            sm.add_widget(err)
-            sm.add_widget(ms)
+            sm.add_widget(loginscreen)
             sm.add_widget(st)
             sm.add_widget(tgl)
-            sm.current='menu'
+            sm.current='login'
             return sm
 
 if __name__=='__main__':
