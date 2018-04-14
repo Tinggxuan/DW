@@ -21,13 +21,16 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
-from kivy.graphics import Color, Rectangle
+from kivy.graphics import Color, Rectangle, Ellipse
 from kivy.uix.popup import Popup
+from kivy.utils import get_color_from_hex
 
 
 useridpassword={"1":"2","Linhao":"Smiley%7654"}
 
 Builder.load_string('''
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
 <LoginScreen>:
 
     LoginBackgroundImage:
@@ -40,7 +43,7 @@ Builder.load_string('''
 
         canvas:
             Color:
-                rgba: 0.702, 0.851, 1.0, 0.75
+                rgba: get_color_from_hex('#0052cc')
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -64,25 +67,75 @@ Builder.load_string('''
         AnchorLayout:
             anchor_x: 'center'
             anchor_y: 'center'
-            size_hint: 1, 1
-            pos_hint: {'x': 0, 'y': 0}
+            size_hint: 1, 0.1
+            pos_hint: {'x': 0, 'y': 0.5}
+            canvas.before:
+                Color: 
+                    rgba: get_color_from_hex('#80aaff')
+                Rectangle:
+                    size: self.size
+                    pos: self.pos 
 
             LoginTextInput:
                 hint_text: 'Username'
-                insert_text:self.insert_text
+
         AnchorLayout:
             anchor_x: 'center'
             anchor_y: 'bottom'
-            size_hint: 1, 1
+            size_hint: 1, 0.1
             pos_hint: {'x': 0, 'y': 0.3}
-
+            canvas.before:
+                Color: 
+                    rgba: get_color_from_hex('#80aaff')
+                Rectangle:
+                    size: self.size
+                    pos: self.pos         
             LoginTextInput:
                 hint_text: 'Password'
                 allow_copy: False
                 password: True
-                insert_text:self.insert_text
-    
-        
+
+
+# Define the attribute of the LoginTextInput
+<LoginTextInput>:
+    size_hint: 1, 1
+    font_size: self.height*0.7
+    padding_y: self.height*0.1
+    font_name: 'Archivo_Black'
+    multiline: False
+    hint_text_color: get_color_from_hex('#e6eeff')
+    background_color: 0,0,0,0
+    foreground_color: get_color_from_hex('#0041cc')
+    cursor_color: get_color_from_hex('#0041cc')
+
+    canvas.after:
+        Color: 
+            rgb: get_color_from_hex('#80aaff')
+        Ellipse:
+            angle_start: 180
+            angle_end: 360
+            size: self.size[1],self.size[1]
+            pos: self.pos[0] - self.size[1]/2.0, self.pos[1]
+        Ellipse:
+            angle_start:360
+            angle_end:540
+            pos: (self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1])
+            size: (self.size[1], self.size[1])
+        Color:
+            rgba: get_color_from_hex('#ffffff')
+        Line:
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+            width: 3
+        Line:
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+            width: 3
+        Line:
+            ellipse: self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360
+            width: 3
+        Line:
+            ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
+            width: 3
+
 
 <SettingsScreen>:
     BoxLayout:
@@ -100,24 +153,12 @@ Builder.load_string('''
 
 
 
-
-
 class LoginBackgroundImage(Image):
     pass
 
-
 class LoginTextInput(TextInput):
-    def __init__(self, **kwargs):
-        
-        super().__init__(**kwargs)
-        self.size_hint = [1, 0.1]
-        self.font_size= self.height*1.5
-        self.padding_y= self.height*0.1
-        self.font_name= 'Archivo_Black'
-        self.multiline= False
-        self.hint_text_color = [0.902, 0.949, 1.0, 0.95]
-        self.background_color = [0.4, 0.678, 1, 0.7]
 
+    # Override the insert_text to limit the maximum input character
     def insert_text(self, substring, from_undo=False):
         maxLength = 12
         length =len(self.text)
@@ -128,9 +169,6 @@ class LoginTextInput(TextInput):
 
 
 
-class LoginMenu(AnchorLayout):
-    pass
-    
 
 class LoginScreen(Screen):
     
