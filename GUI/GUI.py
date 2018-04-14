@@ -7,7 +7,7 @@ Config.set('graphics', 'fullscreen', 'auto')
 # Register all the font
 from kivy.core.text import LabelBase
 LabelBase.register(name="Archivo_Black",  
-                   fn_regular="/fonts/Archivo_Black/ArchivoBlack-Regular.ttf")
+                   fn_regular="./fonts/Archivo_Black/ArchivoBlack-Regular.ttf")
 
 # Import UI module
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -49,6 +49,9 @@ Builder.load_string('''
         Label:
             text: 'Water Management System'
             font_size: 100
+            font_name: 'Archivo_Black'
+
+        
 
         
         
