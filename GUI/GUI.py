@@ -19,9 +19,10 @@ from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
-from kivy.graphics import Color, Rectangle, Ellipse
+from kivy.graphics import Color, Rectangle, Ellipse, Line
 from kivy.uix.popup import Popup
 from kivy.utils import get_color_from_hex
 
@@ -52,49 +53,53 @@ Builder.load_string('''
         size_hint: 0.5, 1
         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-        AnchorLayout:
-            anchor_x: 'center'
-            anchor_y: 'top'
-            size_hint: 1, 1
-            pos_hint: {'x': 0, 'y': 0}
-
+        BoxLayout:
+            size_hint: 1, 0.1
+            pos_hint: {'x': 0, 'y': 0.8}
             Label:
                 text: 'Water Management System'
-                font_size: 150
+                font_size: self.height*0.8
                 font_name: 'Archivo_Black'
-                size_hint: 0.1, 0.4
+                size_hint: 1, 1
 
-        AnchorLayout:
-            anchor_x: 'center'
-            anchor_y: 'center'
-            size_hint: 1, 0.1
-            pos_hint: {'x': 0, 'y': 0.5}
-            canvas.before:
-                Color: 
-                    rgba: get_color_from_hex('#80aaff')
-                Rectangle:
-                    size: self.size
-                    pos: self.pos 
-
+        LoginMenu:
+            pos_hint: {'x': 0, 'y': 0.6}
             LoginTextInput:
                 hint_text: 'Username'
 
-        AnchorLayout:
-            anchor_x: 'center'
-            anchor_y: 'bottom'
-            size_hint: 1, 0.1
-            pos_hint: {'x': 0, 'y': 0.3}
-            canvas.before:
-                Color: 
-                    rgba: get_color_from_hex('#80aaff')
-                Rectangle:
-                    size: self.size
-                    pos: self.pos         
+        LoginMenu:
+            pos_hint: {'x': 0, 'y': 0.45}        
             LoginTextInput:
                 hint_text: 'Password'
                 allow_copy: False
                 password: True
 
+        LoginMenu:
+            pos_hint: {'center_x': 0.5, 'y': 0.25}
+            canvas.before:
+                Clear
+            LoginButton:
+
+        LoginMenu:
+            pos_hint: {'center_x': 0.5, 'y': 0.1}
+            size_hint: 0.12,0.1
+            canvas.before:
+                Clear
+            canvas:
+                Color:
+                    rgb: 1,0,0
+                
+            QuitButton:
+        
+# Define the attribute of the BoxLayout
+<LoginMenu>:
+    size_hint: 1, 0.1
+    canvas.before:
+        Color: 
+            rgba: get_color_from_hex('#80aaff')
+        Rectangle:
+            size: self.size
+            pos: self.pos
 
 # Define the attribute of the LoginTextInput
 <LoginTextInput>:
@@ -136,6 +141,61 @@ Builder.load_string('''
             ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
             width: 3
 
+# Define the attribute for the LoginButton
+<LoginButton>:
+    text: 'LOGIN'
+    font_size: self.height*0.7
+    padding_y: self.height*0.1
+    font_name: 'Archivo_Black'
+    background_color: 0,0,0,0
+    on_press: self.login(self.parent, self.parent.pos)
+
+    canvas.after:
+        Color:
+            rgba: get_color_from_hex('#ffffff')
+        Line:
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+            width: 3
+        Line:
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+            width: 3
+        Line:
+            ellipse: self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360
+            width: 3
+        Line:
+            ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
+            width: 3
+
+# Define the attribute for the QuitButton
+<QuitButton>:
+    background_color: 0,0,0,0
+    on_press: self.quit_app()
+    canvas.after:
+        Color:
+            rgba: get_color_from_hex('#ffffff')
+        # Ellipse:
+        #     pos: self.pos
+        #     size: self.size
+
+        Color:
+            rgb: get_color_from_hex('#ff0000')
+        Line:
+            cap: 'none'
+            points: self.pos[0]+self.size[0]*0.25, self.pos[1]+self.size[1]*0.25, self.pos[0]+self.size[0]*0.75, self.pos[1]+self.size[1]*0.75
+            width: 8
+        Line:
+            cap: 'none'
+            points: self.pos[0]+self.size[0]*0.25, self.pos[1]+self.size[1]*0.75, self.pos[0]+self.size[0]*0.75, self.pos[1]+self.size[1]*0.25
+            width: 8
+        Line:
+            ellipse: self.pos[0], self.pos[1], self.size[1], self.size[1], 180, 360
+            width: 8
+        Line:
+            ellipse: self.pos[0], self.pos[1], self.size[1], self.size[1], 360, 540
+            width: 8
+
+
+
 
 <SettingsScreen>:
     BoxLayout:
@@ -156,6 +216,16 @@ Builder.load_string('''
 class LoginBackgroundImage(Image):
     pass
 
+class LoginMenu(BoxLayout):
+
+    def changeLoginBtnColor(self, parent):
+        with self.canvas:
+            self.color=get_color_from_hex('#00ff00')
+            print(parent)
+            Ellipse(parent.pos[0] - parent.size[1]/2.0, parent.pos[1], parent.size[1],parent.size[1], 180, 360)
+            Ellipse(parent.size[0] + parent.pos[0] - parent.size[1]/2.0, parent.pos[1],parent.size[1], parent.size[1],360,540)
+
+
 class LoginTextInput(TextInput):
 
     # Override the insert_text to limit the maximum input character
@@ -168,7 +238,34 @@ class LoginTextInput(TextInput):
             return super(LoginTextInput, self).insert_text(substring, from_undo=from_undo)
 
 
+class LoginButton(Button):
+    
+    def login(self, parent, pos):
 
+        with parent.canvas.before:
+            Color(0, 0.902,0.6)
+            Rectangle(size=self.size, pos=pos)
+
+        with self.canvas.after:
+            Color(0, 0.902,0.6)
+            Ellipse(pos=(pos[0] - self.size[1]/2.0, pos[1]), size=(self.size[1],self.size[1]), angle_start=180, angle_end=360)
+            Ellipse(pos=(self.size[0] + pos[0] - self.size[1]/2.0, pos[1]), size=(self.size[1],self.size[1]),angle_start=360,angle_end=540)
+            Line(points=[self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]],\
+                 width=3)
+            Line(points=[self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]],\
+                 width=3)
+            Line(ellipse=[self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360],\
+                 width=3)
+            Line(ellipse=[self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540],\
+                 width=3)
+
+    def check_database(self, id, password):
+        pass
+
+class QuitButton(Button):
+    
+    def quit_app(self):
+        App.get_running_app().stop()
 
 class LoginScreen(Screen):
     
@@ -190,8 +287,10 @@ class LoginScreen(Screen):
         print("failed login")
         self.popup.dismiss()
 
-    def quit_app(self, value):
+    def quit_app(self):
         App.get_running_app().stop()
+
+
 
 #print(MenuScreen.self.t1.text)
 
