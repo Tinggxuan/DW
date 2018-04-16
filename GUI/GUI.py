@@ -338,6 +338,8 @@ class LoginButton(Button):
             result = usr_database.get("/" + self.username.text.strip())
             print(self.username.text.strip())
             print(self.password.text.strip())
+            print(result)
+            print(result == self.password.text)
             if result == self.password.text:
                 # Go to control page
                 self.loginscreen.manager.transition.direction = 'left'
