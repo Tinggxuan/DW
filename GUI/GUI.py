@@ -39,7 +39,7 @@ import threading
 Builder.load_string('''
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 
-# Login Scree and all its child widget
+# Login Screen and all its child widget
 <LoginScreen>:
     id: loginscreen
     LoginBackgroundImage:
@@ -265,7 +265,21 @@ Builder.load_string('''
 ############################### This is a divider ###########################################
 
 <ControlScreen>:
-    
+    id: controlscreen
+    ControlBackgroundImage:
+        allow_stretch: True
+        keep_ratio: False
+        opacity: 0.3
+        source: 'piping.jpg'
+        size: self.size
+        pos: self.pos
+
+        canvas:
+            Color:
+                rgba: get_color_from_hex('#404040')
+            Rectangle:
+                size: self.size
+                pos: self.pos
 ''')
 
 
@@ -322,7 +336,8 @@ class LoginButton(Button):
     def check_database(self):
         if len(self.username.text.strip()) > 0 and len(self.password.text.strip())>0:
             result = usr_database.get("/" + self.username.text.strip())
-
+            print(self.username.text.strip())
+            print(self.password.text.strip())
             if result == self.password.text:
                 # Go to control page
                 self.loginscreen.manager.transition.direction = 'left'
@@ -425,6 +440,10 @@ class ControlScreen(Screen):
         self.manager.transition.direction = 'right'
      
         self.manager.current= "menu"
+
+
+class ControlBackgroundImage(Image):
+    pass
 
 class Toggle(Screen):
     def __init__(self, **kwargs):
