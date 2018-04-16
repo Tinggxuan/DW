@@ -8,6 +8,8 @@ Config.set('graphics', 'fullscreen', 'auto')
 from kivy.core.text import LabelBase
 LabelBase.register(name="Archivo_Black",  
                    fn_regular="./fonts/Archivo_Black/ArchivoBlack-Regular.ttf")
+LabelBase.register(name='EastSeaDokdo-Regular',fn_regular='./fonts/EastSeaDokdo-Regular/EastSeaDokdo-Regular.ttf')
+LabelBase.register(name='Gugi-Regular',fn_regular='./fonts/Gugi-Regular/Gugi-Regular.ttf')
 
 # Import UI module
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -25,9 +27,14 @@ from kivy.uix.image import Image
 from kivy.graphics import Color, Rectangle, Ellipse, Line
 from kivy.uix.popup import Popup
 from kivy.utils import get_color_from_hex
+from kivy.properties import ObjectProperty, NumericProperty
+from kivy.uix.dropdown import DropDown
+
+# Import firebase
+from firebase import firebase
 
 
-useridpassword={"1":"2","Linhao":"Smiley%7654"}
+import threading
 
 Builder.load_string('''
 #:import get_color_from_hex kivy.utils.get_color_from_hex
@@ -44,7 +51,7 @@ Builder.load_string('''
 
         canvas:
             Color:
-                rgba: get_color_from_hex('#0052cc')
+                rgba: get_color_from_hex('#404040')
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -58,27 +65,49 @@ Builder.load_string('''
             pos_hint: {'x': 0, 'y': 0.8}
             Label:
                 text: 'Water Management System'
-                font_size: self.height*0.8
-                font_name: 'Archivo_Black'
+                font_size: self.height*1
+                font_name: 'Gugi-Regular'
                 size_hint: 1, 1
+                
 
         LoginMenu:
             pos_hint: {'x': 0, 'y': 0.6}
             LoginTextInput:
+                id: username
                 hint_text: 'Username'
+                
 
         LoginMenu:
             pos_hint: {'x': 0, 'y': 0.45}        
             LoginTextInput:
+                id: password
                 hint_text: 'Password'
                 allow_copy: False
                 password: True
+
 
         LoginMenu:
             pos_hint: {'center_x': 0.5, 'y': 0.25}
             canvas.before:
                 Clear
+                Color:
+                    rgba: 0, 0.902,0.6, self.canvas_opacity #0, 0.902,0.6
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                Ellipse:
+                    pos: self.pos[0] - self.size[1]/2.0, self.pos[1]
+                    size: self.size[1],self.size[1]
+                    angle_start: 180
+                    angle_end: 360
+                Ellipse:
+                    pos: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1]
+                    size: self.size[1],self.size[1]
+                    angle_start:360
+                    angle_end: 540
             LoginButton:
+                username: username
+                password: password
 
         LoginMenu:
             pos_hint: {'center_x': 0.5, 'y': 0.1}
@@ -88,7 +117,7 @@ Builder.load_string('''
             canvas:
                 Color:
                     rgb: 1,0,0
-                
+
             QuitButton:
         
 # Define the attribute of the BoxLayout
@@ -96,7 +125,7 @@ Builder.load_string('''
     size_hint: 1, 0.1
     canvas.before:
         Color: 
-            rgba: get_color_from_hex('#80aaff')
+            rgba: get_color_from_hex('#f2f2f2')
         Rectangle:
             size: self.size
             pos: self.pos
@@ -106,16 +135,16 @@ Builder.load_string('''
     size_hint: 1, 1
     font_size: self.height*0.7
     padding_y: self.height*0.1
-    font_name: 'Archivo_Black'
+    font_name: 'Gugi-Regular'#Archivo_Black'
     multiline: False
-    hint_text_color: get_color_from_hex('#e6eeff')
+    hint_text_color: get_color_from_hex('#d9d9d9')
     background_color: 0,0,0,0
-    foreground_color: get_color_from_hex('#0041cc')
-    cursor_color: get_color_from_hex('#0041cc')
+    foreground_color: get_color_from_hex('#000000')
+    cursor_color: get_color_from_hex('#000000')
 
     canvas.after:
         Color: 
-            rgb: get_color_from_hex('#80aaff')
+            rgb: get_color_from_hex('#f2f2f2')
         Ellipse:
             angle_start: 180
             angle_end: 360
@@ -144,11 +173,12 @@ Builder.load_string('''
 # Define the attribute for the LoginButton
 <LoginButton>:
     text: 'LOGIN'
-    font_size: self.height*0.7
+    font_size: self.height*0.6
     padding_y: self.height*0.1
-    font_name: 'Archivo_Black'
+    font_name: 'Gugi-Regular'#'Archivo_Black'
     background_color: 0,0,0,0
-    on_press: self.login(self.parent, self.parent.pos)
+    on_press: self.login(self.parent, self.parent.pos, self.username, self.password)
+    on_release: self.parent.clear_canvas()
 
     canvas.after:
         Color:
@@ -167,48 +197,137 @@ Builder.load_string('''
             width: 3
 
 # Define the attribute for the QuitButton
+# <QuitButton>:
+#     background_color: 0,0,0,0
+#     on_press: self.quit_app()
+#     canvas.after:
+#         Color:
+#             rgb: get_color_from_hex('#ff0000')
+#         Line:
+#             cap: 'none'
+#             points: self.pos[0]+self.size[0]*0.25, self.pos[1]+self.size[1]*0.25, self.pos[0]+self.size[0]*0.75, self.pos[1]+self.size[1]*0.75
+#             width: 8
+#         Line:
+#             cap: 'none'
+#             points: self.pos[0]+self.size[0]*0.25, self.pos[1]+self.size[1]*0.75, self.pos[0]+self.size[0]*0.75, self.pos[1]+self.size[1]*0.25
+#             width: 8
+#         Line:
+#             ellipse: self.pos[0], self.pos[1], self.size[1], self.size[1], 180, 360
+#             width: 8
+#         Line:
+#             ellipse: self.pos[0], self.pos[1], self.size[1], self.size[1], 360, 540
+#             width: 8
 <QuitButton>:
+    text: 'QUIT'
+    font_size: self.height*0.6
+    padding_y: self.height*0.1
+    font_name: 'Gugi-Regular'
     background_color: 0,0,0,0
     on_press: self.quit_app()
+
     canvas.after:
         Color:
             rgba: get_color_from_hex('#ffffff')
-        # Ellipse:
-        #     pos: self.pos
-        #     size: self.size
-
-        Color:
-            rgb: get_color_from_hex('#ff0000')
         Line:
-            cap: 'none'
-            points: self.pos[0]+self.size[0]*0.25, self.pos[1]+self.size[1]*0.25, self.pos[0]+self.size[0]*0.75, self.pos[1]+self.size[1]*0.75
-            width: 8
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+            width: 3
         Line:
-            cap: 'none'
-            points: self.pos[0]+self.size[0]*0.25, self.pos[1]+self.size[1]*0.75, self.pos[0]+self.size[0]*0.75, self.pos[1]+self.size[1]*0.25
-            width: 8
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+            width: 3
         Line:
-            ellipse: self.pos[0], self.pos[1], self.size[1], self.size[1], 180, 360
-            width: 8
+            ellipse: self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360
+            width: 3
         Line:
-            ellipse: self.pos[0], self.pos[1], self.size[1], self.size[1], 360, 540
-            width: 8
+            ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
+            width: 3
+
+#trydropdown list
+
+# <CustomDropDown>:
+#     Button:
+#         id:btn
+#         text: ''
+#         size_hint_y:
+#         height:
+#         on_release:dropdown.open(self)
+#     DropDown:
+#         id:dropdown
+#         on_parent:self.dismiss()
+#         on_select:btn.text = '{}'.format(args[1])
+#         Button:
+#             text:
+#             size_hint_y:
+#             height:
+#             on_release:dropdown.select()
+       
 
 
+# <SettingsScreen>:
 
+#     SettingBackgroundImage:
+#         allow_stretch: True
+#         keep_ratio: False
+#         opacity: 0.3
+#         source: '.jpeg'
+#         size: self.size
+#         pos: self.pos
 
-<SettingsScreen>:
-    BoxLayout:
-        Label:
-            text: 'Settings Screen'
-            font_size: 50
-        Button:
-            text: 'Back to menu'
-            font_size: 50
-            on_press: 
-                root.manager.transition.direction = 'right'
-                root.manager.current = 'menu'
+#     FloatLayout:
+#         size_hint:0.5,1
+#         pos_hint:{'center_x':0.5,'center_y':0.5}
+        
+#         BoxLayout:
+#             size_hint:1,0.1
+#             pos_hint:{'x':0,'y':0.8}
+#             Lable:
+#                 text:'Control Center'
+#                 font_size:self.height*1
+#                 font_name:'EastSeaDokdo-Regular'
+#                 size_hint:1,1
+#         SettingMenu:
+#             pos_hint: {'x': 0, 'y': 0.6}
+#             SettingTextInput:
+#                 id: Floor_number
+#                 hint_text: 'Floor Number: Choose from 1-10'
+                
+#         SettingMenu:
+#             pos_hint: {'x': 0, 'y': 0.45}
+#             SettingTextInput:
+#                 id: Unit_number
+#                 hint_text: 'Unit Number: Choose from 1-6'
 
+#         SettingMenu:
+#             pos_hint: {'center_x': 0.5, 'y': 0.25}
+#             canvas.before:
+#                 Clear
+#                 Color:
+#                     rgba: 0, 0.902,0.6, self.canvas_opacity #0, 0.902,0.6
+#                 Rectangle:
+#                     size: self.size
+#                     pos: self.pos
+#                 Ellipse:
+#                     pos: self.pos[0] - self.size[1]/2.0, self.pos[1]
+#                     size: self.size[1],self.size[1]
+#                     angle_start: 180
+#                     angle_end: 360
+#                 Ellipse:
+#                     pos: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1]
+#                     size: self.size[1],self.size[1]
+#                     angle_start:360
+#                     angle_end: 540
+#             EnterButton:
+
+#             BackButton:
+                
+#         Label:
+#             text: 'Settings Screen'
+#             font_size: 50
+#         Button:
+#             text: 'Back to menu'
+#             font_size: 50
+#             on_press: 
+#                 root.manager.transition.direction = 'right'
+#                 root.manager.current = 'menu'
 ''')
 
 
@@ -218,6 +337,8 @@ class LoginBackgroundImage(Image):
 
 class LoginMenu(BoxLayout):
 
+    canvas_opacity = NumericProperty(0)
+
     def changeLoginBtnColor(self, parent):
         with self.canvas:
             self.color=get_color_from_hex('#00ff00')
@@ -225,6 +346,11 @@ class LoginMenu(BoxLayout):
             Ellipse(parent.pos[0] - parent.size[1]/2.0, parent.pos[1], parent.size[1],parent.size[1], 180, 360)
             Ellipse(parent.size[0] + parent.pos[0] - parent.size[1]/2.0, parent.pos[1],parent.size[1], parent.size[1],360,540)
 
+    def show_canvas(self):
+        self.canvas_opacity = 1
+
+    def clear_canvas(self):
+        self.canvas_opacity = 0
 
 class LoginTextInput(TextInput):
 
@@ -239,28 +365,34 @@ class LoginTextInput(TextInput):
 
 
 class LoginButton(Button):
+
+    # Link widget using ObjectPorperty()
+    username = ObjectProperty()
+    password = ObjectProperty()
+
+    # Trigger when login button is pressed
+    def login(self, parent, pos, username, password):
+
+        # Check database for validation
+        parent.show_canvas()
+        self.check_database(username, password)
+
+    def remove_background(self, parent):
+        parent.clear_canvas()
+        
+    def check_database(self, username, password):
+        # print(username.text)
+        if len(username.text.strip()) > 0 or len(password.text.strip())>0:
+            result = usr_database.get("/" + username.text.strip())
+
+            if result == password.text:
+                # Go to control page
+                print("OK, pass validation")
+            else:
+                # Prompt the error window and clear the username and password textinput
+                username.text = ""
+                password.text = ""
     
-    def login(self, parent, pos):
-
-        with parent.canvas.before:
-            Color(0, 0.902,0.6)
-            Rectangle(size=self.size, pos=pos)
-
-        with self.canvas.after:
-            Color(0, 0.902,0.6)
-            Ellipse(pos=(pos[0] - self.size[1]/2.0, pos[1]), size=(self.size[1],self.size[1]), angle_start=180, angle_end=360)
-            Ellipse(pos=(self.size[0] + pos[0] - self.size[1]/2.0, pos[1]), size=(self.size[1],self.size[1]),angle_start=360,angle_end=540)
-            Line(points=[self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]],\
-                 width=3)
-            Line(points=[self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]],\
-                 width=3)
-            Line(ellipse=[self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360],\
-                 width=3)
-            Line(ellipse=[self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540],\
-                 width=3)
-
-    def check_database(self, id, password):
-        pass
 
 class QuitButton(Button):
     
@@ -290,9 +422,6 @@ class LoginScreen(Screen):
     def quit_app(self):
         App.get_running_app().stop()
 
-
-
-#print(MenuScreen.self.t1.text)
 
 class SettingsScreen(Screen):
     def __init__(self, **kwargs):
@@ -517,10 +646,14 @@ class SwitchScreenApp(App):
 #            err=SettingsScreen(name="error")
 #            sm.add_widget(err)
             sm.add_widget(loginscreen)
-            sm.add_widget(st)
-            sm.add_widget(tgl)
+            # sm.add_widget(st)
+            # sm.add_widget(tgl)
             sm.current='login'
             return sm
 
 if __name__=='__main__':
+    usr_url = "https://user-ebff1.firebaseio.com/"
+    usr_token = "TDrEhWg2htZPnCl6BYXQEkU1lzwVR09CpvEuT4PL"
+    usr_database = firebase.FirebaseApplication(usr_url, usr_token)
+
     SwitchScreenApp().run()
