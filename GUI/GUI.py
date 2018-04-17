@@ -29,6 +29,7 @@ from kivy.uix.popup import Popup
 from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, NumericProperty
 from kivy.uix.dropdown import DropDown
+from kivy.uix.spinner import Spinner, SpinnerOption
 
 # Import firebase
 from firebase import firebase
@@ -120,7 +121,9 @@ Builder.load_string('''
                 Color:
                     rgb: 1,0,0
             QuitButton:
-        
+
+############# Login Screen child widget attribute #############
+
 # Define the attribute of the BoxLayout
 <LoginMenu>:
     size_hint: 1, 0.1
@@ -261,8 +264,7 @@ Builder.load_string('''
 #             height:
 #             on_release:dropdown.select()
        
-
-############################### This is a divider ###########################################
+############################### This is a divider ###############################
 
 <ControlScreen>:
     id: controlscreen
@@ -280,9 +282,234 @@ Builder.load_string('''
             Rectangle:
                 size: self.size
                 pos: self.pos
+
+
+    FloatLayout:
+        size_hint: 0.5, 1
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        BoxLayout:
+            size_hint: 1, 0.1
+            pos_hint: {'x': 0, 'y': 0.8}
+            Label:
+                text: 'Control Center'
+                font_size: self.height*1.1
+                font_name: 'Gugi-Regular'
+                size_hint: 1, 1
+
+        BoxLayout:
+            size_hint: 1, 0.1
+            pos_hint: {'x': -0.3, 'y':0.55}
+            Label:
+                text: 'Floor'
+                font_size: self.height*0.9
+                font_name: 'Gugi-Regular'
+                size_hint: 1, 1
+        
+        BoxLayout:
+            size_hint: 1, 0.1
+            pos_hint: {'x': -0.3, 'y':0.35}
+            Label:
+                text: 'Unit'
+                font_size: self.height*0.9
+                font_name: 'Gugi-Regular'
+                size_hint: 1, 1
+
+
+        ControlOptionMenu:
+            pos_hint: {'x': 1.3, 'y': 0.9}
+            size_hint: 0.15, 0.05
+            LogoutButton:
+                controlscreen: controlscreen
+                
+        ControlOptionMenu:
+            pos_hint: {'x': 1.198, 'y': 0.9}
+            size_hint: 0.08, 0.05
+            SmallQuitButton:
+
+        ControlOptionMenu:
+            pos_hint: {'center_x': 0.5, 'y': 0.1}
+            size_hint: 0.15, 0.1
+            EnterButton:
+                controlscreen: controlscreen
+
+        MyThing:
+            text: ''
+            max: 2
+            values: ["1", "2", "3","4","5","6","7"]
+            size_hint: None,None
+            size: (200,100)
+            # background_normal: "./NOT.png" 
+            pos_hint: {'center_x':0.7,'center_y':0.599}
+
+        MyThing:
+            text: ''
+            values: ["1", "2", "3","4","5","6","7"]
+            size_hint: None, None
+            # background_normal: "./NOT.png" 
+            pos_hint: {'center_x':0.7,'center_y':0.4}
+            size: (200,100)
+        
+                
+
+############# Control Screen child widget attribute #############
+<ControlOptionMenu>:
+    size_hint: 1, 0.1
+
+<LogoutButton>
+    text: 'LOGOUT'
+    font_size: self.height*0.6
+    padding_y: self.height*0.1
+    font_name: 'Gugi-Regular'
+    background_color: 0,0,0,0
+    on_press: self.logout(self.parent, self.parent.pos)
+    on_release: self.parent.clear_canvas()
+
+    canvas.after:
+        Color:
+            rgba: get_color_from_hex('#ffffff')
+        Line:
+            points: self.pos[0]-self.size[0]*0.05 , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+            width: 3
+        Line:
+            points: self.pos[0]-self.size[0]*0.05, self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+            width: 3
+        Line:
+            points: self.pos[0]-self.size[0]*0.05, self.pos[1], self.pos[0]-self.size[0]*0.05, self.pos[1] + self.size[1]
+            width: 3
+        Line:
+            ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
+            width: 3
+    
+
+<SmallQuitButton>:
+    text: 'QUIT'
+    font_size: self.height*0.6
+    padding_y: self.height*0.1
+    font_name: 'Gugi-Regular'
+    background_color: 0,0,0,0
+    on_press: self.quit_app()
+
+    canvas.after:
+        Color:
+            rgba: get_color_from_hex('#ffffff')
+        Line:
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0]*1.2, self.pos[1]
+            width: 3
+        Line:
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0]*1.2, self.pos[1] + self.size[1]
+            width: 3
+        Line:
+            ellipse: self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360
+            width: 3
+        Line:
+            points: self.pos[0] + self.size[0]*1.2, self.pos[1] + self.size[1], self.pos[0] + self.size[0]*1.2, self.pos[1]
+            width: 3
+
+<EnterButton>:
+    text: 'ENTER'
+    font_size: self.height*0.6
+    padding_y: self.height*0.1
+    font_name: 'Gugi-Regular'
+    background_color: 0,0,0,0
+    on_press: self.controlunit()
+
+    canvas.after:
+        Color:
+            rgba: get_color_from_hex('#ffffff')
+        Line:
+            points: self.pos[0] , self.pos[1], self.pos[0] + self.size[0], self.pos[1]
+            width: 3
+        Line:
+            points: self.pos[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0], self.pos[1] + self.size[1]
+            width: 3
+        Line:
+            ellipse: self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 180, 360
+            width: 3
+        Line:
+            ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
+            width: 3
+
+
+#!text
+#:kivy 1.7.2
+#:import Factory kivy.factory.Factory
+
+#:set color_button (0.85, 0.85, 0.85, 0.85)  
+#:set color_button_pressed (0.6, 0.6, 0.6, 0.6) 
+#:set color_font   (0.957, 0.890, 0.843, 1)  # off white
+
+<MyThingButton@Button>
+    background_down: "./NOT.png"           
+    background_normal: "./NOT.png"
+    allow_stretch: True
+        # size_hint = 0.1, 0.1
+    
+
+<MySpinnerOption@SpinnerOption>:
+    background_color: color_button if self.state == 'down' else color_button_pressed
+    background_normal: "./NOT.png"
+    background_down: "./NOT.png" #"atlas://data/images/defaulttheme/button"
+    allow_stretch: True
+    # background_disabled_normal: "./NOT.png"
+    color: color_font
+ 
+<MyThing@Spinner>: #Spinner:
+    text: ""
+    values: ["1", "2", "3","4","5","6","7"]
+    background_color: color_button if self.state == 'normal' else color_button_pressed
+    background_normal: "./NOT.png" 
+    background_down: "./NOT.png"   
+    allow_stretch: True        
+    color: color_font
+    option_cls: Factory.MySpinnerOption
+    size_hint: None, None
+    #####pos_hint= {'top':0.7,'right":0.6}
+
+
+############################### This is a divider ###############################
 ''')
 
+class LoginScreen(Screen):
 
+    def openPopup(self, opt):
+        if opt == 1:
+            # Popup for fail login
+            popup = Popup(title='Login Failed', title_size=self.size[0]*0.01,\
+                          content=Label(text='Incorrect username or password.'),\
+                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
+                          on_touchdown=self.dismisspopup)
+            popup.open()
+        
+        elif opt == 2:
+            # Popup for missing password
+            popup = Popup(title='Insufficient Input', title_size=self.size[0]*0.01,\
+                          content=Label(text='Please enter your password.'),\
+                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
+                          on_touchdown=self.dismisspopup)
+            popup.open()
+
+        elif opt == 3:
+            # Popup for missing username
+            popup = Popup(title='Insufficient Input', title_size=self.size[0]*0.01,\
+                          content=Label(text='Please enter your username.'),\
+                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
+                          on_touchdown=self.dismisspopup)
+            popup.open()
+
+        elif opt == 4:
+            # Popup for no info input
+            popup = Popup(title='Insufficient Input', title_size=self.size[0]*0.01,\
+                          content=Label(text='Please enter your username and password.'),\
+                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
+                          on_touchdown=self.dismisspopup)
+            popup.open()
+
+    def dismisspopup(self,instance, touch):
+        self.popup.dismiss()
+
+    def quit_app(self):
+        App.get_running_app().stop()
 
 class LoginBackgroundImage(Image):
     pass
@@ -329,19 +556,14 @@ class LoginButton(Button):
         # Check database for validation
         parent.show_canvas()
         self.check_database()
-
-    def remove_background(self, parent):
-        parent.clear_canvas()
         
     def check_database(self):
         if len(self.username.text.strip()) > 0 and len(self.password.text.strip())>0:
-            result = usr_database.get("/" + self.username.text.strip())
-            print(self.username.text.strip())
-            print(self.password.text.strip())
-            print(result)
-            print(result == self.password.text)
+            result = str(usr_database.get("/" + self.username.text.strip()))
             if result == self.password.text:
                 # Go to control page
+                self.username.text = ""
+                self.password.text = ""
                 self.loginscreen.manager.transition.direction = 'left'
                 self.loginscreen.manager.current = 'controlscreen'
                 
@@ -357,77 +579,27 @@ class LoginButton(Button):
         elif len(self.password.text.strip()) > 0:
             self.loginscreen.openPopup(3)
         else:
-            self.loginscreen.openPopup(4)
-            
-            
+            self.loginscreen.openPopup(4)            
 
 class QuitButton(Button):
     
     def quit_app(self):
         App.get_running_app().stop()
 
-class LoginScreen(Screen):
-
-    def openPopup(self, opt):
-        if opt == 1:
-            # Popup for fail login
-            popup = Popup(title='Login Failed', title_size=self.size[0]*0.01,\
-                          content=Label(text='Incorrect username or password.'),\
-                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
-                          on_touchdown=self.dismisspopup)
-            popup.open()
-        
-        elif opt == 2:
-            # Popup for missing password
-            popup = Popup(title='Insufficient Input', title_size=self.size[0]*0.01,\
-                          content=Label(text='Please enter your password.'),\
-                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
-                          on_touchdown=self.dismisspopup)
-            popup.open()
-
-        elif opt == 3:
-            # Popup for missing username
-            popup = Popup(title='Insufficient Input', title_size=self.size[0]*0.01,\
-                          content=Label(text='Please enter your username.'),\
-                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
-                          on_touchdown=self.dismisspopup)
-            popup.open()
-
-        elif opt == 4:
-            # Popup for no info input
-            popup = Popup(title='Insufficient Input', title_size=self.size[0]*0.01,\
-                          content=Label(text='Please enter your username and password.'),\
-                          size_hint=(None, None), size=(self.size[0]*0.3, self.size[0]*0.3),\
-                          on_touchdown=self.dismisspopup)
-            popup.open()
-
-    def dismisspopup(self,instance, touch):
-        self.popup.dismiss()
-
-    def quit_app(self):
-        App.get_running_app().stop()
-
+############### This is a divider ###################
 
 class ControlScreen(Screen):
-       
-    pass
-
-    def change_to_toggle(self,value):
-        print("enter2 pressed")
-                    
-        if self.t5.text not in self.blk:
-
     
+    def change_to_toggle(self,value):
+        print("enter2 pressed")            
+        if self.t5.text not in self.blk:
             if self.t8.text not in self.floor:
-
                 self.popup = Popup(title='', content=Label(text='Please key in valid Block and Floor \n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)      
                 self.popup.open()
             else:
                 self.popup = Popup(title='', content=Label(text='Please key in valid Block \n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)      
-                self.popup.open()
-                
+                self.popup.open()  
         elif self.t8.text not in self.floor:
-
                 self.popup = Popup(title='', content=Label(text='Please key in valid Floor \n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)      
                 self.popup.open()    
         else:
@@ -436,16 +608,61 @@ class ControlScreen(Screen):
     def dismisspopup(self,instance, touch):
         print("failed login")
         self.popup.dismiss()
-        
-               
     def change_to_menu(self,value):
         self.manager.transition.direction = 'right'
-     
         self.manager.current= "menu"
-
 
 class ControlBackgroundImage(Image):
     pass
+
+class ControlOptionMenu(BoxLayout):
+    canvas_opacity = NumericProperty(0)
+
+    def changeLogoutBtnColor(self, parent):
+        with self.canvas:
+            self.color=get_color_from_hex('#00ff00')
+            print(parent)
+            Ellipse(parent.pos[0] - parent.size[1]/2.0, parent.pos[1], parent.size[1],parent.size[1], 180, 360)
+            Ellipse(parent.size[0] + parent.pos[0] - parent.size[1]/2.0, parent.pos[1],parent.size[1], parent.size[1],360,540)
+
+    def show_canvas(self):
+        self.canvas_opacity = 1
+
+    def clear_canvas(self):
+        self.canvas_opacity = 0
+
+class LogoutButton(Button):
+    controlscreen = ObjectProperty()
+
+    def logout(self, parent, pos):
+        parent.show_canvas()
+        self.controlscreen.manager.transition.direction = 'right'
+        self.controlscreen.manager.current = 'loginscreen'
+
+
+class SmallQuitButton(Button):
+    
+    def quit_app(self):
+        App.get_running_app().stop()
+
+class EnterButton(Button):
+    controlscreen = ObjectProperty()
+    
+    # def controlunit(self):
+        # Go to the 'switchscreen' with all the parameter needed
+        # self.controlscreen.manager.transition.direction = 'left'
+        # self.controlscreen.manager.current = 'switchscreen'
+
+############### This is a divider ###################
+
+from kivy.uix.scrollview import ScrollView
+
+class MyThingButton(ScrollView):
+    def __init__(self,MyThing,**kwargs):
+        super().__init__(**kwargs)
+
+
+###################### DIVIDER ########
 
 class Toggle(Screen):
     def __init__(self, **kwargs):
@@ -545,7 +762,7 @@ class Toggle(Screen):
 class SwitchScreenApp(App):
     def build(self):
             sm = ScreenManager()
-            loginscreen = LoginScreen(name='login')
+            loginscreen = LoginScreen(name='loginscreen')
             controlscreen = ControlScreen(name='controlscreen')
             # tgl=Toggle(name="toggle")
             # err=SettingsScreen(name="error")
@@ -553,7 +770,7 @@ class SwitchScreenApp(App):
             sm.add_widget(loginscreen)
             sm.add_widget(controlscreen)
             # sm.add_widget(tgl)
-            sm.current='login'
+            sm.current='loginscreen'
             return sm
 
 if __name__=='__main__':
