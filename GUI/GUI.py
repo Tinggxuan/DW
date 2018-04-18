@@ -30,6 +30,8 @@ from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, NumericProperty
 from kivy.uix.dropdown import DropDown
 from kivy.uix.spinner import Spinner, SpinnerOption
+from kivy.uix.bubble import Bubble
+from kivy.uix.behaviors import ToggleButtonBehavior
 
 # Import firebase
 from firebase import firebase
@@ -244,25 +246,6 @@ Builder.load_string('''
         Line:
             ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
             width: 3
-
-#trydropdown list
-
-# <CustomDropDown>:
-#     Button:
-#         id:btn
-#         text: ''
-#         size_hint_y:
-#         height:
-#         on_release:dropdown.open(self)
-#     DropDown:
-#         id:dropdown
-#         on_parent:self.dismiss()
-#         on_select:btn.text = '{}'.format(args[1])
-#         Button:
-#             text:
-#             size_hint_y:
-#             height:
-#             on_release:dropdown.select()
        
 ############################### This is a divider ###############################
 
@@ -271,7 +254,7 @@ Builder.load_string('''
     ControlBackgroundImage:
         allow_stretch: True
         keep_ratio: False
-        opacity: 0.3
+        opacity: 0.4
         source: 'piping.jpg'
         size: self.size
         pos: self.pos
@@ -297,58 +280,76 @@ Builder.load_string('''
                 font_name: 'Gugi-Regular'
                 size_hint: 1, 1
 
-        BoxLayout:
-            size_hint: 1, 0.1
+        ControlOptionMenu:
             pos_hint: {'x': -0.3, 'y':0.55}
+            Label:
+                text: 'Block'
+                font_size: self.height*0.9
+                font_name: 'Gugi-Regular'
+                size_hint: 1, 1
+        
+        ControlOptionMenu:
+            pos_hint: {'x': -0.3, 'y':0.35}
             Label:
                 text: 'Floor'
                 font_size: self.height*0.9
                 font_name: 'Gugi-Regular'
                 size_hint: 1, 1
-        
+
         BoxLayout:
-            size_hint: 1, 0.1
-            pos_hint: {'x': -0.3, 'y':0.35}
-            Label:
-                text: 'Unit'
-                font_size: self.height*0.9
-                font_name: 'Gugi-Regular'
-                size_hint: 1, 1
-
-
-        ControlOptionMenu:
             pos_hint: {'x': 1.3, 'y': 0.9}
             size_hint: 0.15, 0.05
             LogoutButton:
                 controlscreen: controlscreen
                 
-        ControlOptionMenu:
+        BoxLayout:
             pos_hint: {'x': 1.198, 'y': 0.9}
             size_hint: 0.08, 0.05
             SmallQuitButton:
 
-        ControlOptionMenu:
+        BoxLayout:
             pos_hint: {'center_x': 0.5, 'y': 0.1}
             size_hint: 0.15, 0.1
             EnterButton:
                 controlscreen: controlscreen
 
-        MyThing:
-            text: ''
-            max: 2
-            values: ["1", "2", "3","4","5","6","7"]
-            size_hint: None,None
-            size: (200,100)
-            # background_normal: "./NOT.png" 
-            pos_hint: {'center_x':0.7,'center_y':0.599}
+        BoxLayout:
+            size_hint: 0.5, 0.1
+            pos_hint: {'x':0.5, 'y':0.55}
+            # canvas:
+            #     Color:
+            #         rgba: 0,1,0,1
+            #     Rectangle:
+            #         size: self.size
+            #         pos: self.pos
+            # Button:
+            #     size_hint: self.size
+            #     text: "Please select the floor unit"
+            #     font_size: self.height*0.9
+            #     font_name: 'Gugi-Regular'
+
 
         MyThing:
             text: ''
-            values: ["1", "2", "3","4","5","6","7"]
+            font_size: self.height*0.5
+            max: 2
+            values: ["1"]
+            size_hint: None,None
+            size: (280,130)
+            background_normal: "./T/1.png" 
+            pos_hint: {'center_x':0.7,'center_y':0.599}
+            background_down: "./T/xin.png"
+           # background_color: 1,1,1,1
+
+        MyThing:
+            text: ''
+            font_size: self.height*0.5
+            values: ["1", "2"]
             size_hint: None, None
-            # background_normal: "./NOT.png" 
+            background_normal: "./T/1.png" 
             pos_hint: {'center_x':0.7,'center_y':0.4}
-            size: (200,100)
+            size: (280,130)
+            background_down: "./T/xin.png"
         
                 
 
@@ -412,7 +413,7 @@ Builder.load_string('''
     padding_y: self.height*0.1
     font_name: 'Gugi-Regular'
     background_color: 0,0,0,0
-    on_press: self.controlunit()
+    on_press: self.trypopup() #unfinished
 
     canvas.after:
         Color:
@@ -430,6 +431,13 @@ Builder.load_string('''
             ellipse: self.size[0] + self.pos[0] - self.size[1]/2.0, self.pos[1], self.size[1], self.size[1], 360, 540
             width: 3
 
+# <DropDownButton@Button>:
+#     font_size: self.height*0.6
+#     padding_y: self.height*0.1
+#     font_name: 'Gugi-Regular'
+#     background_color: 0,0,0,0
+
+
 
 #!text
 #:kivy 1.7.2
@@ -440,36 +448,51 @@ Builder.load_string('''
 #:set color_font   (0.957, 0.890, 0.843, 1)  # off white
 
 <MyThingButton@Button>
-    background_down: "./NOT.png"           
-    background_normal: "./NOT.png"
+    #background_down: "./NOT.png"           
+    #background_normal: "./NOT.png"
+    font_size: self.height*0.5
     allow_stretch: True
         # size_hint = 0.1, 0.1
     
 
 <MySpinnerOption@SpinnerOption>:
     background_color: color_button if self.state == 'down' else color_button_pressed
-    background_normal: "./NOT.png"
-    background_down: "./NOT.png" #"atlas://data/images/defaulttheme/button"
+    #background_normal: "./T/YES.png"
+    #background_down: "./T/niao.png" #"atlas://data/images/defaulttheme/button"
     allow_stretch: True
-    # background_disabled_normal: "./NOT.png"
+    #background_disabled_normal: "./T/niao.jpg"
     color: color_font
+    font_size: self.height*0.5
  
 <MyThing@Spinner>: #Spinner:
     text: ""
     values: ["1", "2", "3","4","5","6","7"]
-    background_color: color_button if self.state == 'normal' else color_button_pressed
-    background_normal: "./NOT.png" 
-    background_down: "./NOT.png"   
+    # background_color: color_button if self.state == 'normal' else color_button_pressed
+    background_color: 1,1,1,1
+    background_normal: "./piping.png" 
+    background_down: "./piping.png"   
     allow_stretch: True        
     color: color_font
     option_cls: Factory.MySpinnerOption
-    size_hint: None, None
+    size_hint: 2,2
     #####pos_hint= {'top':0.7,'right":0.6}
 
 
 ############################### This is a divider ###############################
 ''')
+class Toggleslider(ToggleButtonBehavior, Image):
+    def __init__(self, **kwargs):
+        super(Toggleslider, self).__init__(**kwargs)
+        self.source = './T/CLOSED.png'
+        #self.size_hint = (0.7,0.7)
 
+    def on_state(self, widget, value):
+        if value == 'down' and self.source == './T/CLOSED.png':
+            self.source = './T/MIDDLE.png' 
+            self.source = './T/OPENED.png'
+        else:
+            self.source = './T/MIDDLE.png' 
+            self.source = './T/CLOSED.png'
 class LoginScreen(Screen):
 
     def openPopup(self, opt):
@@ -589,28 +612,37 @@ class QuitButton(Button):
 ############### This is a divider ###################
 
 class ControlScreen(Screen):
-    
-    def change_to_toggle(self,value):
-        print("enter2 pressed")            
-        if self.t5.text not in self.blk:
-            if self.t8.text not in self.floor:
-                self.popup = Popup(title='', content=Label(text='Please key in valid Block and Floor \n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)      
-                self.popup.open()
-            else:
-                self.popup = Popup(title='', content=Label(text='Please key in valid Block \n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)      
-                self.popup.open()  
-        elif self.t8.text not in self.floor:
-                self.popup = Popup(title='', content=Label(text='Please key in valid Floor \n\n\n            -click to try again-'),size_hint=(0.3, 0.3),auto_dismiss=False, on_touch_down=self.dismisspopup)      
-                self.popup.open()    
-        else:
-            self.manager.transition.direction = 'left'
-            self.manager.current = "toggle"
-    def dismisspopup(self,instance, touch):
-        print("failed login")
+     
+    #def layout(self):
+    #layout = BoxLayout(orientation="vertical")
+    #btn1 = Button()
+    #btn2 = Button()
+    #layout.add_widget(btn1)
+    #layout.add_widget(btn2)
+
+    def trypopup(self):
+        print('yes')
+        #popup = Popup(title='Control Setting', title_size=60,content=Button(text='yes'),size_hint=(0.7, 0.7), size=(self.size[0]*0.6, self.size[0]*0.6),title_align='center')
+        #popup.open()
+        self.box=BoxLayout(orientation="vertical")
+        #self.box = FloatLayout(size=(0.5,0.5))
+        toggle=Toggleslider()
+        self.box.add_widget(toggle)
+
+        #self.box.add_widget(Label(font_name="Gugi-Regular",text="lala"))
+        self.box.add_widget(Button(font_name="Gugi-Regular",text="CLOSE",color=(0,0,0,1), font_size=48, size_hint=(0.2,0.2),pos_hint={'center_x':0.5,'center_y':0.3},on_press=self.exit_,background_normal="./T/YES.png"))
+        #content = Button(text="Close",size_hint=(0.1,0.1))
+
+        self.popup = Popup(title='Control Setting',title_font="Gugi-Regular", title_size=100, content=self.box, size_hint=(0.6, 0.6), size=(self.size[0]*0.6, self.size[0]*0.6),title_align='center',auto_dismiss=False,background="./T/shui.png")
+        
+        self.popup.open()
+        
+        #popup = Popup(content = content, auto_dismiss=False,size_hint=(0.3,0.3))
+        #popup.open()
+        #pop = Popup(title="Control Setting", size_hint=(0.5,0.5),title_size=24,title_align='center', auto_dismiss=True)
+        #pop.open()
+    def exit_(self,value):
         self.popup.dismiss()
-    def change_to_menu(self,value):
-        self.manager.transition.direction = 'right'
-        self.manager.current= "menu"
 
 class ControlBackgroundImage(Image):
     pass
@@ -647,11 +679,43 @@ class SmallQuitButton(Button):
 
 class EnterButton(Button):
     controlscreen = ObjectProperty()
+
+    def trypopup(self):
+        print('lala')
+        self.controlscreen.trypopup()
+        #pop = Popup(title="Control Setting", size_hint=(0.5,0.5),title_size=24,title_align='center', auto_dismiss=True)
+        #pop.open()
     
     # def controlunit(self):
         # Go to the 'switchscreen' with all the parameter needed
         # self.controlscreen.manager.transition.direction = 'left'
         # self.controlscreen.manager.current = 'switchscreen'
+
+
+
+
+class cut_copy_paste(Bubble):
+    pass
+
+
+class BubbleShowcase(FloatLayout):
+
+    def __init__(self, **kwargs):
+        super(BubbleShowcase, self).__init__(**kwargs)
+        self.but_bubble = Button(text='Press to show bubble')
+        self.but_bubble.bind(on_release=self.show_bubble)
+        self.add_widget(self.but_bubble)
+
+    def show_bubble(self, *l):
+        if not hasattr(self, 'bubb'):
+            self.bubb = bubb = cut_copy_paste()
+            self.add_widget(bubb)
+        else:
+            values = ('left_top', 'left_mid', 'left_bottom', 'top_left',
+                'top_mid', 'top_right', 'right_top', 'right_mid',
+                'right_bottom', 'bottom_left', 'bottom_mid', 'bottom_right')
+            index = values.index(self.bubb.arrow_pos)
+            self.bubb.arrow_pos = values[(index + 1) % len(values)]
 
 ############### This is a divider ###################
 
@@ -777,5 +841,10 @@ if __name__=='__main__':
     usr_url = "https://user-ebff1.firebaseio.com/"
     usr_token = "TDrEhWg2htZPnCl6BYXQEkU1lzwVR09CpvEuT4PL"
     usr_database = firebase.FirebaseApplication(usr_url, usr_token)
+
+    building_control_url = "https://building-control-f7747.firebaseio.com/"
+    building_control_token = "BRSEyh9LmukzG7ocB6D73zmA9kx7AkatgJWLmLpe"
+    building_control_database = firebase.FirebaseApplication(building_control_url, \
+                                building_control_token)
 
     SwitchScreenApp().run()
